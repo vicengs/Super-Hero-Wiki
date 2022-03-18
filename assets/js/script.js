@@ -11,8 +11,9 @@
 /* Modified : 03/18/2022           */
 /* ------------------------------- */
 var characterNameInputEl = $("#characterNameInput")
-var characterFormEl = $(".character-form")
+var characterFormEl = $("#character-form") // updated to match new html format - SF
 
+// Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function(event) {
     event.preventDefault();
     // get value from input element
@@ -24,12 +25,12 @@ var formSubmitHandler = function(event) {
     } else {
         alert("Please enter a valid character name");
     }
-    console.log(event);
 }
+
 // Function to get movie(s) data - VG
 var getMovieApiData = function(movieCharacter){
     // Declare Movie API url - VG
-    var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query="+movieCharacter;
+    var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query=" + movieCharacter;
     // Declare DOM to display movies
     var moviesEl = $(".movies");
     // Request to movie API url - VG
@@ -65,6 +66,8 @@ var getMarvelApiData = function(character) {
                 console.log(data);
                 // Call to function to get movies - VG
                 getMovieApiData(character);
+                // Display characters - SF
+                displayMarvelApi(data, character);
             });
         } else {
             alert("Character not found")
@@ -72,6 +75,12 @@ var getMarvelApiData = function(character) {
     });
     console.log(character);
     getMovieApiData(character); // Temporary - VG
-}
+};
+
+// Function to display characters from Marvel Api - In progress - SF
+// var displayMarvelApi = function(characters, ) {
+//     if();
+// };
+
 // Change to id character-form - VG
 $("#character-form").on('submit', formSubmitHandler);
