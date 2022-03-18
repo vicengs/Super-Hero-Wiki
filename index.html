@@ -1,10 +1,24 @@
+<!-- ------------------------------- -->
+<!-- Project  : Super Hero Wiki      -->
+<!-- File     : index.html           -->
+<!-- Authors  : Ballard Ingram  (BI) -->
+<!--          : Stephen Fike    (SF) -->
+<!--          : Nathan Greiling (NG) -->
+<!--          : Matthew Berti   (MB) -->
+<!--          : Kevin Heaton    (KH) -->
+<!--          : Vicente Garcia  (VG) -->
+<!-- Created  : 03/17/2022           -->
+<!-- Modified : 03/18/2022           -->
+<!-- ------------------------------- -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet"/>
+    <!-- Add link to page style sheet - VG -->
+    <link rel="stylesheet" href="./assets/css/style.css"/>
     <title>SuperWiki</title>
 </head>
 <body>
@@ -25,8 +39,12 @@
 
     <!--Searchbar section-->
     <div class="">
-        <input id="characterNameInput" type="text" name="search" placeholder="Find a Hero or Villain">
-            <input type="submit" value="search">
+        <!-- Add form tag and id to listener - VG -->
+        <form id="character-form">
+            <input id="characterNameInput" type="text" name="search" placeholder="Find a Hero or Villain">
+            <!-- <input type="submit" value="search"> -->
+            <button type="submit">Search</button>
+        </form>
     </div>
 
     <!--Hero img and description-->
@@ -40,9 +58,17 @@
     <!--lists the appearances of the hero-->
     <div class="">
         <h2 class="">Appearances of Your Hero</h2>
-        <ul class="">
+        <!--<ul class="">
             <li class=""></li>
-        </ul>
+        </ul>-->
+        <div class="movies">
+            <!-- List of movies-->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="#movie-modal" tabindex="-1" role="dialog" aria-labelledby="task-form-modal" aria-hidden="true">
+        <p>prueba</p>
     </div>
 
     <!--footer with links to Marvel and DC-->
@@ -51,6 +77,9 @@
             Check out the <a href="https://www.marvel.com/">Marvel</a> website for more info!
         </p>
     </footer>
-
+    <!-- Add link to jQuery - VG -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Add link to local JavaScript file - VG -->
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
