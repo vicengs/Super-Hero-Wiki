@@ -12,74 +12,96 @@
 <!-- ------------------------------- -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet" />
     <!-- Add link to page style sheet - VG -->
-    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>SuperWiki</title>
-</head>
-<body>
+  </head>
+  <body>
     <!--logo and background-->
     <header class="flex">
-        <!--Background and logo-->
-        <img src="./assets/images/banner1.jpg" class="w-100" name="background" alt=""/>
-        <h1 class="text-right align-text-top">Where Heros Assemble</h1>
+      <!--Background and logo-->
+      <img
+        src="./assets/images/banner1.jpg"
+        class="w-100"
+        name="background"
+        alt=""
+      />
+      <h1 class="text-right align-text-top font-bold">Where Heros Assemble</h1>
     </header>
 
     <!--Sidebar-->
     <aside class="">
-        <h2 class="">Popular Searches</h2>
-            <ul class="" >
-                <li class=""><a href="">Hero Name</a></li>
-            </ul>
+      <h2 class="">Popular Searches</h2>
+      <ul class="">
+        <li class=""><a href="">Hero Name</a></li>
+      </ul>
     </aside>
 
     <!--Searchbar section-->
     <div class="">
-        <!-- Add form tag and id to listener - VG -->
-        <form id="character-form">
-            <input id="characterNameInput" type="text" name="search" placeholder="Find a Hero or Villain">
-            <!-- <input type="submit" value="search"> -->
-            <button type="submit">Search</button>
-        </form>
+      <!-- Add form tag and id to listener - VG -->
+      <form id="character-form">
+        <input
+          class=""
+          id="characterNameInput"
+          type="text"
+          name="search"
+          placeholder="Find a Hero or Villain"
+        />
+        <!-- <input type="submit" value="search"> -->
+        <button type="submit">Search</button>
+      </form>
     </div>
+
+    <div class="characters"></div>
 
     <!--Hero img and description-->
     <div class="">
-        <img id="hero-picture" class="" src="" alt="" />
-        <p class="">
-            <!--character description-->
-        </p>
+      <img id="hero-picture" class="" src="" alt="" />
+      <p class="">
+        <!--character description -->
+      </p>
     </div>
 
     <!--lists the appearances of the hero-->
     <div class="">
-        <h2 class="">Appearances of Your Hero</h2>
-        <!--<ul class="">
+      <h2 class="">Appearances of Your Hero</h2>
+      <!--<ul class="">
             <li class=""></li>
         </ul>-->
-        <div class="movies">
-            <!-- List of movies-->
-        </div>
+      <div class="movies">
+        <!-- List of movies-->
+      </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="#movie-modal" tabindex="-1" role="dialog" aria-labelledby="task-form-modal" aria-hidden="true">
-        <p>prueba</p>
+    <div
+      class="modal fade"
+      id="#movie-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="task-form-modal"
+      aria-hidden="true"
+    >
+      <p>prueba</p>
     </div>
 
     <!--footer with links to Marvel and DC-->
     <footer class="">
-        <p class="">
-            Check out the <a href="https://www.marvel.com/">Marvel</a> website for more info!
-        </p>
+      <p class="">
+        Check out the <a href="https://www.marvel.com/">Marvel</a> website for
+        more info!
+      </p>
     </footer>
     <!-- Add link to jQuery - VG -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- Add link to local JavaScript file - VG -->
     <script src="./assets/js/script.js"></script>
-</body>
+  </body>
 </html>
