@@ -33,17 +33,52 @@ var getMovieApiData = function(movieCharacter){
     // Declare DOM to display movies
     var moviesEl = $(".movies");
     // Request to movie API url - VG
-    fetch(movieApiUrl).then(function(response){
+    var numId = 0;
+    fetch(movieApiUrl).then(function(responseMovie){
         // If retrieves data continues - VG
-        if (response.ok){
+        if (responseMovie.ok){
             // Interpret response to manage - VG
-            response.json().then(function(data){
+            responseMovie.json().then(function(dataMovie){
                 // Loop to get each movie found to that character - VG
-                for (var i = 0; i < data.results.length; i++){
-                    // Show movies in page
-                    moviesEl.append("<p><a href='#' data-toggle='modal' data-target='#movie-modal'>" + data.results[i].original_title + "</a></p>");
+                for (var i = 0; i < dataMovie.results.length; i++){
+                    var companyApiUrl = "https://api.themoviedb.org/3/movie/" + dataMovie.results[i].id + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0"
+                    fetch(companyApiUrl).then(function(responseCompany){
+                        if (responseCompany.ok){
+                            responseCompany.json().then(function(dataCompany){
+                                for (var j = 0; j < dataCompany.production_companies.length; j++){
+                                    if (dataCompany.production_companies[j].id === 420){
+                                        // Show movies in page - VG
+                                        numId = numId + 1;
+                                        moviesEl.append("<p><a href='#' class='cta-" + numId + "'>" + dataCompany.original_title + "</a></p>");
+                                        //href='https://image.tmdb.org/t/p/original/" + dataCompany.poster_path + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0' data-toggle='modal' data-target='#movie-modal'>" + dataCompany.original_title
+                                        var closeEl = document.querySelector(".close");
+                                        var openEl = document.querySelector(".cta-"+numId);
+                                        var modalEl = document.querySelector(".modal");
+                                        var modalContainer = document.querySelector(".modal-container");
+                                        openEl.addEventListener("click",function(event){
+                                            event.preventDefault();
+                                            console.log("entra al click");
+                                            modalContainer.style.opacity = "1";
+                                            modalContainer.style.visibility = "visible";
+                                            modalEl.classList.toggle("modal-close");
+                                        });
+                                        closeEl.addEventListener("click", function(){
+                                            modalEl.classList.toggle("modal-close");
+                                            setTimeout(function(){
+                                                modalContainer.style.opacity = "0";
+                                                modalContainer.style.visibility = "hidden";
+                                            },1000);
+                                        });
+                                    };
+                                };
+                            });
+                        }else{
+                            console.log("Company don't found for that character");
+                        };
+                    });
+                    
                     // I suggest put the overview in a modal
-                    // moviesEl.append("<p>" + data.results[i].overview + "</p>");
+                    // moviesEl.append("<p>" + dataMovie.results[i].overview + "</p>");
                 };
             });
         }else{
@@ -67,7 +102,7 @@ var getMarvelApiData = function(character) {
                 getMovieApiData(character);
             });
         } else {
-            alert("Character not found")
+            //alert("Character not found")
         }
     });
     console.log(character);
