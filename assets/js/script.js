@@ -12,6 +12,7 @@
 /* ------------------------------- */
 var characterNameInputEl = $("#characterNameInput")
 var characterFormEl = $("#character-form") // updated to match new html format - SF
+var onloadFetch = document.getElementById('onloadFetch') //Used for the popular bar.
 
 // Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function(event) {

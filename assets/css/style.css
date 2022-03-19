@@ -58,3 +58,27 @@
 body {
     font-family: 'Permanent Marker', cursive;
 }
+
+.popularbar {
+    margin: 10px;
+    padding: 10px;
+    border-width: 5px;
+    height: fit-content;
+    width: 300px;
+    background-image: url(https://wallpapertag.com/wallpaper/full/5/9/7/354610-large-comic-book-background-2048x2048-for-android-50.jpg);
+    background-size: fill;
+}
+
+.popularbar h2 {
+    text-align: center;
+    font-size: large;
+}
+
+.col-8 {
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+
+.mb-3 {
+    margin-bottom: 1rem;
+  }
