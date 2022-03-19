@@ -54,3 +54,7 @@
     cursor: pointer;
     border-radius: 50%;
 }
+
+body {
+    font-family: 'Permanent Marker', cursive;
+}
