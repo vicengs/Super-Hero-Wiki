@@ -75,3 +75,21 @@ var getMarvelApiData = function(character) {
 }
 // Change to id character-form - VG
 $("#character-form").on('submit', formSubmitHandler);
+
+//Add Popular Superhero Movies to Home
+var popularMovieData = function(list){
+    var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
+    //Declare DOM to display Popular Movies
+    var popularEl = $("#popular-list");
+    //request to API
+    fetch(popularURL).then(function(response){
+        if(response.ok){
+        response.json().then(function(data){
+            //display array
+            console.log(data);
+        });
+        }else{
+            alert("API Can't Load Popular Films");
+        }
+})};
+popularMovieData();
