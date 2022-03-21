@@ -86,7 +86,10 @@ var popularMovieData = function(list){
         if(response.ok){
         response.json().then(function(data){
             //display array
-            console.log(data);
+            for(var i = 0; i < data.results.length; i++){
+                popularEl.append("<p><a href='#' data-toggle='modal' data-target='#popular-modal'>" + data.results[i].original_title + "</a></p>");
+            }
+           // console.log(data);
         });
         }else{
             alert("API Can't Load Popular Films");
