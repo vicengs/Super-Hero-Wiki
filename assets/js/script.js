@@ -8,7 +8,7 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/17/2022           */
-/* Modified : 03/18/2022           */
+/* Modified : 03/22/2022           */
 /* ------------------------------- */
 var characterNameInputEl = $("#characterNameInput");
 var characterFormEl = $("#character-form"); // updated to match new html format - SF
@@ -21,7 +21,8 @@ var formSubmitHandler = function (event) {
   var characterName = characterNameInputEl.val().trim();
 
   if (characterName) {
-    getMarvelApiData(characterName);
+    getMovieApiData(characterName); // Temporary
+    //getMarvelApiData(characterName);
     characterNameInputEl.val("");
   } else {
     alert("Please enter a valid character name");
@@ -47,72 +48,158 @@ var getMarvelApiData = function (character) {
         displayMarvelApi(data);
       });
     } else {
-      alert("Character not found");
+      //alert("Character not found");
     }
   });
   console.log(character);
 };
-
+// Variable to activate listener to close modal - VG
+var closeModal = true;
 // Function to get movie(s) data - VG
 var getMovieApiData = function(movieCharacter){
     // Declare Movie API url - VG
-    var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query=" + movieCharacter;
-    // Declare DOM to display movies
+    var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query=" + movieCharacter ;
+    // Declare DOM to display movies - VG
     var moviesEl = $(".movies");
-    // Request to movie API url - VG
+    // Declare variable to assign unique id to each mnovie - VG
     var numId = 0;
+    // Declare array for production companies - VG
+    var arrCompanyMovies = [];
+    // Declare array for movies - VG
+    var arrMovies = [];
+    // Request to movie API url - VG
     fetch(movieApiUrl).then(function(responseMovie){
-        // If retrieves data continues - VG
+        // If retrieves movies data continues - VG
         if (responseMovie.ok){
-            // Interpret response to manage - VG
+            // Clear movies section - VG
+            moviesEl.empty();
+            // Interpret movies response to manage - VG
             responseMovie.json().then(function(dataMovie){
                 // Loop to get each movie found to that character - VG
                 for (var i = 0; i < dataMovie.results.length; i++){
+                    // Declare movie-company API url - VG
                     var companyApiUrl = "https://api.themoviedb.org/3/movie/" + dataMovie.results[i].id + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0"
+                    // Request to movie-company API url - VG
                     fetch(companyApiUrl).then(function(responseCompany){
+                        // If retrieves movies-company data continues - VG
                         if (responseCompany.ok){
+                            // Interpret company response to manage - VG
                             responseCompany.json().then(function(dataCompany){
+                                // Loop to get just Marvel (420, 7505, 19551, 13252) or DC (128064, 174, 429, 9993) movies - VG
                                 for (var j = 0; j < dataCompany.production_companies.length; j++){
-                                    if (dataCompany.production_companies[j].id === 420){
-                                        // Show movies in page - VG
-                                        numId = numId + 1;
-                                        moviesEl.append("<p><a href='#' class='cta-" + numId + "'>" + dataCompany.original_title + "</a></p>");
-                                        //href='https://image.tmdb.org/t/p/original/" + dataCompany.poster_path + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0' data-toggle='modal' data-target='#movie-modal'>" + dataCompany.original_title
-                                        var closeEl = document.querySelector(".close");
-                                        var openEl = document.querySelector(".cta-"+numId);
-                                        var modalEl = document.querySelector(".modal");
-                                        var modalContainer = document.querySelector(".modal-container");
-                                        openEl.addEventListener("click",function(event){
-                                            event.preventDefault();
-                                            console.log("entra al click");
-                                            modalContainer.style.opacity = "1";
-                                            modalContainer.style.visibility = "visible";
-                                            modalEl.classList.toggle("modal-close");
-                                        });
-                                        closeEl.addEventListener("click", function(){
-                                            modalEl.classList.toggle("modal-close");
-                                            setTimeout(function(){
-                                                modalContainer.style.opacity = "0";
-                                                modalContainer.style.visibility = "hidden";
-                                            },1000);
-                                        });
-                                    };
-                                };
-                            });
+                                    if ((dataCompany.production_companies[j].id === 420 || dataCompany.production_companies[j].id === 7505 || dataCompany.production_companies[j].id === 19551 ||
+                                         dataCompany.production_companies[j].id === 128064 || dataCompany.production_companies[j].id === 174 || dataCompany.production_companies[j].id === 429 || dataCompany.production_companies[j].id === 9993) &&
+                                         dataCompany.backdrop_path != null){
+                                            // Array to storage the movie that meets conditions - VG
+                                            arrCompanyMovies = {title: dataCompany.original_title
+                                                               ,image: dataCompany.backdrop_path
+                                                               ,overview: dataCompany.overview
+                                                               ,year: dataCompany.release_date.substring(0,4)};
+                                            // Add new movie to main array from company movies - VG
+                                            arrMovies.push(arrCompanyMovies);
+                                            // Break to avoid duplicity when has more than 1 valid production company - VG
+                                            break;
+                                    }; // Close if Company Production - VG
+                                }; // Close for API companies - VG
+                            }); // Close Response Companies json function - VG
                         }else{
+                            // If doesn't retrieve data catch to show an error in screen - VG
                             console.log("Company don't found for that character");
-                        };
-                    });
-                    
-                    // I suggest put the overview in a modal
-                    // moviesEl.append("<p>" + dataMovie.results[i].overview + "</p>");
-                };
-            });
+                        }; // Close if companies response ok - VG
+                    }); // Close fetch API companies - VG
+                }; // Close For API movies - VG
+            }); // Close Response Movies json function - VG
         }else{
             // If doesn't retrieve data catch to show an error in screen - VG
+            // Open a modal - VG
             console.log("Movies don't found for that character");
+        }; // Close if movies response ok - VG
+    }); // Close fetch API movies - VG
+    // Timeout to be able to validate bacause the API's are asyncronous - VG
+    setTimeout(function(){
+        // Variables to sort results by year production - VG
+        var maxYear = 0;
+        var maxIndex = 0;
+        var nextYear = 0;
+        var nextIndex = 0;
+        // Variable to allow get the max year just the first time - VG
+        var firstTime = true;
+        // Begin loop to iterate depending how many elements there are in the movies array - VG
+        for (var k = 0; k < arrMovies.length; k++){
+            // Initialize variables each main lap - VG
+            nextYear = 0;
+            nextIndex = 0;
+            // Reverse loop to validate each value ang get movies sorted by year - VG
+            for (var l = arrMovies.length - 1; l >= 0; l--){
+                // Get current movie year - VG
+                var currentYear = arrMovies[l].year;
+                // Enter just first time to get max year - VG
+                if (firstTime){
+                    // For each movie in the array check if is the max year - VG
+                    if (currentYear > nextYear){
+                        // If is the max year assign the row temporary like max value until finish loop - VG
+                        nextYear = currentYear;
+                        nextIndex = l;
+                    };
+                // Check the next max year - VG
+                }else if (currentYear < maxYear && currentYear > nextYear){
+                    nextYear = currentYear;
+                    nextIndex = l;
+                // Check if is a same year production - VG
+                }else if(currentYear === maxYear && l < maxIndex){
+                    nextYear = currentYear;
+                    nextIndex = l;
+                    // Break to avoid don't consider the movie if there are more than 2 different movies in the same year - VG
+                    break;
+                };
+            };
+            // Now assign the max vaslue to row after the loop finish each time - VG
+            maxYear = nextYear;
+            maxIndex = nextIndex;
+            // Change first time variable because don't need to enter to get maximum year - VG
+            firstTime = false;
+            // Add 1 to id per each movie found - VG
+            numId = numId + 1;
+            // Show movies in page - VG
+            moviesEl.append("<p><a href='#' id=" + maxIndex + " class='hero-" + numId + "'>" + arrMovies[maxIndex].title + " (" + maxYear + ")</a></p>");
+            // Declare variables DOM to manipulate HTML and style - VG
+            var openEl = $(".hero-"+numId);
+            var closeEl = $(".close");
+            var modalEl = document.querySelector(".modal");
+            var modalContainer = $(".modal-container");
+            var overviewEl = $(".overview");
+            openEl.click(function(event){
+                event.preventDefault();
+                modalContainer.css("opacity","1");//.style.opacity = "1";
+                modalContainer.css("visibility","visible");//style.visibility = "visible";
+                modalEl.classList.toggle("modal-close");
+                overviewEl.empty();
+                modalEl.style.backgroundImage = "url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)";
+                overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>")
+            });
+            if (closeModal){
+                closeEl.click(function(event){
+                    event.preventDefault();
+                    modalEl.classList.toggle("modal-close");
+                    setTimeout(function(){
+                        //modalContainer.style.opacity = "0";
+                        modalContainer.css("visibility","hidden");//style.visibility = "hidden";
+                    },590);
+                });
+                window.addEventListener("click", function(event){
+                    var modalContainer1 = document.querySelector(".modal-container");
+                    if (event.target == modalContainer1){
+                        modalEl.classList.toggle("modal-close");
+                        setTimeout(function(){
+                            modalContainer.css("opacity","0");//style.opacity = "0";
+                            modalContainer.css("visibility","hidden");//style.visibility = "hidden";
+                        },590);
+                    };
+                });
+                closeModal = false;
+            };
         };
-    });
+    },1000);
 };
 
 // Function to display characters from Marvel Api - SF

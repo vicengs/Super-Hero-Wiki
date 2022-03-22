@@ -7,8 +7,8 @@
 /*          : Matthew Berti   (MB) */
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
-/* Created  : 03/--/2022           */
-/* Modified : 03/--/2022           */
+/* Created  : 03/18/2022           */
+/* Modified : 03/21/2022           */
 /* ------------------------------- */
 .modal-container{
     opacity: 0;
@@ -27,14 +27,15 @@
 .modal{
     width: 40%;
     height: 50%;
-    background: red;
-    overflow: hidden;
+    color: white;
+    background-size: cover;
+    /*overflow: hidden;*/
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     position: relative;
-    transition: transform 0.8s;
+    transition: transform 1s;
     transform: translateY(0%);
     border-radius: 10px;
 }
@@ -46,11 +47,25 @@
     top: 5px;
     right: 5px;
     display: inline-block;
-    width: 25px;
+    width: 30px;
     height: 25px;
-    background: blue;
-    color: white;
+    background: red;
+    box-shadow: 2px 2px 2px black;
+    text-shadow: 1px 1px 1px black;
+    font-weight: bolder;
     line-height: 25px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 30%;
+}
+.close:hover{
+    top: 6px;
+    box-shadow: 1px 1px 1px black;
+    text-shadow: 0px 0px 0px black;
+}
+.close:active{
+    top: 8px;
+    box-shadow: 0px 0px 0px black;
+}
+.overview{
+    text-shadow: 2px 5px 3px black;
 }
