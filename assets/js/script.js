@@ -79,7 +79,7 @@ $("#character-form").on('submit', formSubmitHandler);
 
 
 
-//Add Popular Superhero Movies to Home
+//Add Popular Superhero Movies to Homepage
 var popularMovieData = function(list){
     var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
     //Declare DOM to display Popular Movies
@@ -91,31 +91,20 @@ var popularMovieData = function(list){
             //display array
             for(var i = 0; i < data.results.length; i++){
                 var moviePosterUrl = "https://image.tmdb.org/t/p/w92" + data.results[i].poster_path;
-                //create DOM Element for Image
+                //create DOM Element for Image and Movie Name
+                    //retrieves movie poster
                 popularEl.append("<p><img src='" + moviePosterUrl +  "'></p>");
+                    //retrieves movie name and order
                 popularEl.append("<p><a href='#' data-toggle='modal' data-target='#popular-modal'>" + data.results[i].original_title +  "</a></p>");
-                //get url for images
-               
-                
-
-                console.log(moviePosterUrl);
-
-                //File Path to Movie Images
-                //console.log(data.results[i].poster_path);
             }
         });
         }else{
+            // TODO:  REPLACE ALERT WITH MODAL ERROR MESSAGE
             alert("API Can't Load Popular Films");
         }
 })};
 popularMovieData();
-/*Function to retrieve movie posters from API
-var moviePosters = function(){
-    //Configure Poster Sizes for Movie API
-    var moviePosterUrl = "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path + ".png";
-        //console.log(moviePosterUrl);
-}
-moviePosters();*/
+
 
 
 
