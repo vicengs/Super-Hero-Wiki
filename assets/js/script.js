@@ -13,7 +13,7 @@
 var characterNameInputEl = $("#characterNameInput");
 var characterFormEl = $("#character-form"); // updated to match new html format - SF
 var characterSelectEl = $(".characters");
-
+var bioSelectEl = $(".description");
 // Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function (event) {
   event.preventDefault();
@@ -42,6 +42,8 @@ var getMarvelApiData = function (character) {
         console.log(data);
         // Display characters - SF
         displayMarvelApi(data);
+        // Displays descriptions - NG
+        displayMarvelHeroDesc(data);
       });
     } else {
       alert("Character not found");
@@ -80,6 +82,26 @@ var displayMarvelApi = function (character) {
     characterSelectEl.append(lineBreak);
   }
 };
+
+// function displaying a description of the character from the Marvel API - NG
+var displayMarvelHeroDesc = function (bio) {
+  // loop through array of descriptions
+  for (var i = 0; i < bio.data.results.length; i++) {
+    // creates the description container
+    var bioContainerEl = document.createElement("div");
+    bioContainerEl.classList = "descriptionContainer";
+    // holds desired result from API 
+    var description = bio.data.results[i].description;
+    // creates span element and sets the content as the description
+    var descriptionEl = document.createElement("span");
+    descriptionEl.textContent = description;
+    // appeneds the span element to the created div
+    bioContainerEl.appendChild(descriptionEl);
+    // appends the div to the specified element in the HTML
+    bioSelectEl.append(bioContainerEl);
+  }
+};
+
 
 // Change to id character-form - VG
 $("#character-form").on("submit", formSubmitHandler);
