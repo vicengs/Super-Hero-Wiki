@@ -165,34 +165,33 @@ var getMovieApiData = function(movieCharacter){
             // Declare variables DOM to manipulate HTML and style - VG
             var openEl = $(".hero-"+numId);
             var closeEl = $(".close");
-            var modalEl = document.querySelector(".modal");
             var modalContainer = $(".modal-container");
             var overviewEl = $(".overview");
+            var modalEl = $(".modal");
             openEl.click(function(event){
                 event.preventDefault();
-                modalContainer.css("opacity","1");//.style.opacity = "1";
-                modalContainer.css("visibility","visible");//style.visibility = "visible";
-                modalEl.classList.toggle("modal-close");
+                modalContainer.css("opacity","1");
+                modalContainer.css("visibility","visible");
+                modalEl.toggleClass("modal-close");
                 overviewEl.empty();
-                modalEl.style.backgroundImage = "url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)";
-                overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>")
+                modalEl.css("backgroundImage","url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)");
+                overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>");
             });
             if (closeModal){
                 closeEl.click(function(event){
                     event.preventDefault();
-                    modalEl.classList.toggle("modal-close");
+                    modalEl.toggleClass("modal-close");
                     setTimeout(function(){
-                        //modalContainer.style.opacity = "0";
-                        modalContainer.css("visibility","hidden");//style.visibility = "hidden";
+                        modalContainer.css("visibility","hidden");
                     },590);
                 });
                 window.addEventListener("click", function(event){
-                    var modalContainer1 = document.querySelector(".modal-container");
-                    if (event.target == modalContainer1){
-                        modalEl.classList.toggle("modal-close");
+                    var modalContainerTarget = document.querySelector(".modal-container");
+                    if (event.target == modalContainerTarget){
+                        modalEl.toggleClass("modal-close");
                         setTimeout(function(){
-                            modalContainer.css("opacity","0");//style.opacity = "0";
-                            modalContainer.css("visibility","hidden");//style.visibility = "hidden";
+                            modalContainer.css("opacity","0");
+                            modalContainer.css("visibility","hidden");
                         },590);
                     };
                 });
