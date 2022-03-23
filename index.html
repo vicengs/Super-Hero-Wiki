@@ -1,88 +1,59 @@
-<!-- ------------------------------- -->
-<!-- Project  : Super Hero Wiki      -->
-<!-- File     : index.html           -->
-<!-- Authors  : Ballard Ingram  (BI) -->
-<!--          : Stephen Fike    (SF) -->
-<!--          : Nathan Greiling (NG) -->
-<!--          : Matthew Berti   (MB) -->
-<!--          : Kevin Heaton    (KH) -->
-<!--          : Vicente Garcia  (VG) -->
-<!-- Created  : 03/17/2022           -->
-<!-- Modified : 03/18/2022           -->
-<!-- ------------------------------- -->
+<!-- --------------------------------- -->
+<!-- Project   : Super Hero Wiki       -->
+<!-- File      : index.html            -->
+<!-- Authors   : Ballard Ingram (BI)   -->
+<!--           : Stephen Fike (SF)     -->
+<!--           : Nathan Greiling (NG)  -->
+<!--           : Matthew Berti (MB)    -->
+<!--           : Kevin Heaton (KH)     -->
+<!--           : Vicente Garcia (VG)   -->
+<!-- Created   : 03/17/2022            -->
+<!-- Modified  : 03/23/2022            -->
+<!-- --------------------------------  -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- REQUIRED META TAGS-->
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE-Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/dist/output.css" rel="stylesheet">
-    <!-- Add link to page style sheet - VG -->
-    <link rel="stylesheet" href="./assets/css/style.css"/>
-    <style> @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');</style>
-    <link rel="icon" type="image/x-icon" href="./assets/images/ficon.ico">
+    
+    <!--LINKING STYLE SHEETS AND TITLES-->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/preficon.ico">
+    <style> @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap'); </style>
     <title>SuperWiki</title>
-</head>
+    </head>
+
 <body>
-    <!--logo and background-->
-    <header class="flex">
-        <!--Background and logo-->
-        <img src="./assets/images/banner1.jpg" class="w-100" name="background" alt=""/>
-        <h1 class="text-right align-text-top">Where Heros Assemble</h1>
-    </header>
+    <!-- PAGE CONTAINER AND INDIVIDUAL SECTIONS-->
+    <div class="container">
+        <header class="header">
+          SuperWiki
+          <p>Where Heroes Assemble</p>
+        </header>
+        
+        <nav class="nav">
+          Popular Heroes
+        </nav>
+        
+        <main class="main">
+            <input type="text" class="form-control" placeholder="Find your hero...">
+            <button class="btn btn-dark search" type="button-addon2">SEARCH</button><br>
+          Hero Results Section
+        </main>
+        
+        <section class="media">
+            Your Hero in Movies
+        </section>
 
-    <!--Sidebar-->
-    <aside class="popularbar">
-        <h2 id="onloadFetch">Popular Searches</h2>
-        <ul class="col-8 mb-3"></ul>
-    </aside>
+      </div>
 
-    <!--Searchbar section-->
-    <div class="rounded shadow">
-        <!-- Add form tag and id to listener - VG -->
-        <form id="character-form">
-            <input id="characterNameInput" type="text" name="search" placeholder="Find a Hero or Villain">
-            <!-- <input type="submit" value="search"> -->
-            <button type="submit">Search</button>
-        </form>
-    </div>
-
-    <!--Hero img and description-->
-    <div class="">
-        <img id="hero-picture" class="" src="" alt="" />
-        <p class="">
-            <!--character description-->
-        </p>
-    </div>
-
-    <!--lists the appearances of the hero-->
-    <div class="">
-        <h2 class="text-2xl">Appearances of Your Hero</h2>
-        <!--<ul class="">
-            <li class=""></li>
-        </ul>-->
-        <div class="movies">
-            <!-- List of movies-->
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal-container">
-        <div class="modal modal-close">
-            <p class="close">X</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum aspernatur quod fugit sapiente tempora necessitatibus vero ea praesentium maiores, suscipit eos quas. Dolorum aut sapiente reiciendis veniam repudiandae iusto?</p>
-        </div>
-    </div>
-
-    <!--footer with links to Marvel and DC-->
-    <footer class="">
-        <p class="">
-            Check out the <a href="https://www.marvel.com/">Marvel</a> website for more info!
-        </p>
-    </footer>
-    <!-- Add link to jQuery - VG -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- Add link to local JavaScript file - VG -->
-    <script src="./assets/js/script.js"></script>
+      <footer class="footer">
+        <a href="https://www.dccomics.com/characters">SEE MORE ON THE DC CHARACTER PAGE<br><br><br></a>
+        <p>Created By: Team Alpha Super Awesome Cool Dynamite Wolf Squadron</p>
+      </footer>
 </body>
 </html>
