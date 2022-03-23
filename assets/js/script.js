@@ -79,27 +79,28 @@ $("#character-form").on('submit', formSubmitHandler);
 
 
 
-//Add Popular Superhero Movies to Homepage
+//Add Popular Superhero Movies to Homepage - MB
 var popularMovieData = function(list){
     var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
-    //Declare DOM to display Popular Movies
+    //Declare DOM to display Popular Movies - MB
     var popularEl = $("#popular-list");
-    //request to API
+    //request to API - MB
     fetch(popularURL).then(function(response){
         if(response.ok){
         response.json().then(function(data){
-            //display array
+            //display array - MB
             for(var i = 0; i < data.results.length; i++){
+                //retrieve movie poster from URL - MB
                 var moviePosterUrl = "https://image.tmdb.org/t/p/w92" + data.results[i].poster_path;
-                //create DOM Element for Image and Movie Name
-                    //retrieves movie poster
+                //create DOM Element for Image and Movie Name - MB
+                    //appends movie poster - MB
                 popularEl.append("<p><img src='" + moviePosterUrl +  "'></p>");
-                    //retrieves movie name and order
+                    //retrieves and appends movie name and popularity order - MB
                 popularEl.append("<p><a href='#' data-toggle='modal' data-target='#popular-modal'>" + data.results[i].original_title +  "</a></p>");
             }
         });
         }else{
-            // TODO:  REPLACE ALERT WITH MODAL ERROR MESSAGE
+            // TODO:  REPLACE ALERT WITH MODAL ERROR MESSAGE - MB
             alert("API Can't Load Popular Films");
         }
 })};
