@@ -8,10 +8,10 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/17/2022           */
-/* Modified : 03/22/2022           */
+/* Modified : 03/23/2022           */
 /* ------------------------------- */
-var characterNameInputEl = $("#characterNameInput");
-var characterFormEl = $("#character-form"); // updated to match new html format - SF
+var characterNameInputEl = $(".form-control");//$("#characterNameInput"); // Class form-control instead id characterNameInput - VG
+//var characterFormEl = $("#character-form"); // updated to match new html format - SF - Not used yet - VG
 var characterSelectEl = $(".characters");
 
 // Function to take form input and pass onto Marvel Api
@@ -21,20 +21,21 @@ var formSubmitHandler = function (event) {
   var characterName = characterNameInputEl.val().trim();
 
   if (characterName) {
-    getMovieApiData(characterName); // Temporary
-    //getMarvelApiData(characterName);
+    //getMovieApiData(characterName); // Temporary
+    getMarvelApiData(characterName);
     characterNameInputEl.val("");
   } else {
-    alert("Please enter a valid character name");
+    //alert("Please enter a valid character name"); // No alerts - VG
   }
 };
 
 var getMarvelApiData = function (character) {
   // format marvel api url
   var apiUrl =
-    "https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=" +
+    /*"https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=" +
     character +
-    "&apikey=8aa203e41460eb91a6faf2e98ab88784";
+    "&apikey=8aa203e41460eb91a6faf2e98ab88784";*/ // API don't work, use hash and timestap - VG
+    "https://gateway.marvel.com/v1/public/characters?apikey=bdcf8bf36f00d72167a3bfecfe99a353&hash=2c434abaf442b44445f5f4b5032e4de9&ts=9&nameStartsWith="+character;
   // make request to url
   fetch(apiUrl).then(function (response) {
     // successful response
@@ -88,7 +89,7 @@ var getMovieApiData = function(movieCharacter){
                                 // Loop to get just Marvel (420, 7505, 19551, 13252) or DC (128064, 174, 429, 9993) movies - VG
                                 for (var j = 0; j < dataCompany.production_companies.length; j++){
                                     if ((dataCompany.production_companies[j].id === 420 || dataCompany.production_companies[j].id === 7505 || dataCompany.production_companies[j].id === 19551) &&
-                                         //dataCompany.production_companies[j].id === 128064 || dataCompany.production_companies[j].id === 174 || dataCompany.production_companies[j].id === 429 || dataCompany.production_companies[j].id === 9993) &&
+                                         //(dataCompany.production_companies[j].id === 128064 || dataCompany.production_companies[j].id === 174 || dataCompany.production_companies[j].id === 429 || dataCompany.production_companies[j].id === 9993) &&
                                          dataCompany.backdrop_path != null){
                                             // Array to storage the movie that meets conditions - VG
                                             arrCompanyMovies = {title: dataCompany.original_title
@@ -230,7 +231,7 @@ var displayMarvelApi = function (character) {
 };
 
 // Change to id character-form - VG
-$("#character-form").on('submit', formSubmitHandler);
+$(".main").on('submit', formSubmitHandler);
 
 
 
@@ -260,7 +261,7 @@ var popularMovieData = function(list){
             alert("API Can't Load Popular Films");
         }
 })};
-popularMovieData();
+//popularMovieData();
 
 
 

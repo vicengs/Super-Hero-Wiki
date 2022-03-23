@@ -8,8 +8,105 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/18/2022           */
-/* Modified : 03/21/2022           */
+/* Modified : 03/23/2022           */
 /* ------------------------------- */
+body {
+    font-family: 'Permanent Marker', cursive;
+    color: white;
+}
+.container {
+    margin: 0 auto;
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    max-width: 100%;
+    grid-auto-rows: minmax(200px, auto);
+    margin: 10px;
+}  
+.header {
+    grid-column: 1/4;
+    grid-row: 1/2;
+    background-image: url(https://s1.gifyu.com/images/marvelbackground.gif);
+    background-size: cover;
+    background-position: center;
+    border: 10px solid black;
+    margin: 5px;
+    font-size: 5rem;
+    /*color: white;*/
+}
+.header p {
+    font-size: 3rem;
+    vertical-align: center;
+} 
+.nav {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    background-image: url(https://wallpapertag.com/wallpaper/full/5/9/7/354610-large-comic-book-background-2048x2048-for-android-50.jpg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    border: 10px solid black;
+    padding: 10px;
+    margin: 5px;
+    font-size: 2rem;
+    /*color: white;*/
+}
+.main {
+    grid-column: 2,3,4;
+    grid-row: 2 / 4;
+    grid-row-gap: 20px;
+    background-image: url(https://as1.ftcdn.net/v2/jpg/01/43/21/48/1000_F_143214885_giQJ2nbKFxbKJ9IFxQqJN09McuEmq0CN.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 10px solid black;
+    padding: 10px;
+    margin: 5px;
+    font-size: 2rem;
+    /*color: white;*/
+}
+.media {
+    grid-column: 1/4;
+    grid-row: 4;
+    background-image: url(https://cdn3.vectorstock.com/i/1000x1000/02/52/big-city-cartoon-book-style-background-vector-15760252.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 10px solid black;
+    padding: 10px;
+    margin: 5px;
+    font-size: 2rem;
+    /*color: white;*/
+}
+.movies a{
+    color: white;
+}
+.footer {
+    background-image: url(https://c4.wallpaperflare.com/wallpaper/8/212/856/dc-comics-joker-wallpaper-preview.jpg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-color: black;
+    border: 10px solid black;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+}
+.footer a {
+    color: white;
+    font-size: 2rem;
+    background-image: url(https://beet.gr/wp-content/uploads/2021/05/dc-comics-banner-2000x566.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 5px solid white;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0px 20px;
+}
+.footer p {
+    /*color: white;*/
+    font-size: 12px;
+    text-align: center;
+}
 .modal-container{
     opacity: 0;
     visibility: hidden;
@@ -27,7 +124,7 @@
 .modal{
     width: 40%;
     height: 50%;
-    color: white;
+    /*color: white;*/
     background-size: cover;
     /*overflow: hidden;*/
     text-align: center;
