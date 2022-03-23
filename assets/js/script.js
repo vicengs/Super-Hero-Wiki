@@ -41,7 +41,6 @@ var getMarvelApiData = function (character) {
     // successful response
     if (response.ok) {
       response.json().then(function (data) {
-        console.log(data);
         // Display characters - SF
         displayMarvelApi(data);
       });
@@ -67,6 +66,15 @@ var displayMarvelApi = function (character) {
     var infoEl = document.createElement("card");
     // line break for better look on page - using because no style on page yet
     var lineBreak = document.createElement("br");
+    // get character picture
+    var picture = character.data.results[i].thumbnail.path + ".jpg";
+    // create anchor for picture
+    var pictureContainer = document.createElement("img");
+    pictureContainer.src = picture;
+    // create marvel copyright container
+    var copyrightEl = document.createElement('p');
+    copyrightEl.textContent = "Data provided by Marvel. © 2014 Marvel";
+
     // Check if there is a description
     if(character.data.results[i].description === "") {
       infoEl.innerHTML = name + ": " + "No desctiption";
@@ -77,7 +85,9 @@ var displayMarvelApi = function (character) {
     // appened to container
     characterContainerEl.appendChild(infoEl);
     // append to DOM w/ line break
+    characterSelectEl.append(pictureContainer);
     characterSelectEl.append(characterContainerEl);
+    characterSelectEl.append(copyrightEl);
     characterSelectEl.append(lineBreak);
   }
 };
