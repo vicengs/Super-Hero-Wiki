@@ -43,13 +43,13 @@ var getMarvelApiData = function (character) {
       response.json().then(function (data) {
         // displayMarvelApiData(data)
         console.log(data);
-        // Call to function to get movies - VG
-        getMovieApiData(character);
         // Display characters - SF
         displayMarvelApi(data);
+        // Call to function to get movies - VG
+        getMovieApiData(character);
       });
     } else {
-      //alert("Character not found");
+      //alert("Character not found"); // No alerts - VG
     }
   });
   console.log(character);
@@ -210,9 +210,8 @@ var getMovieApiData = function(movieCharacter){
         };
     },1000);
 };
-
 // Function to display characters from Marvel Api - SF
-var displayMarvelApi = function (character) {
+/*var displayMarvelApi = function (character) {
   // loop through characters array
   for (var i = 0; i < character.data.results.length; i++) {
     // create character container
@@ -228,7 +227,48 @@ var displayMarvelApi = function (character) {
     // append to DOM
     characterSelectEl.append(characterContainerEl);
   }
-};
+};*/
+// Function to display characters from Marvel Api - SF
+var displayMarvelApi = function (character) {
+    characterSelectEl.empty();
+    // loop through characters array
+    for (var i = 0; i < character.data.results.length; i++) {
+      // create character container
+      var characterContainerEl = document.createElement("div");
+      characterContainerEl.classList = "characterContainer";
+      // format name
+      var name = character.data.results[i].name;
+      // format description
+      var description = character.data.results[i].description;
+      // span element for character info
+      var infoEl = document.createElement("card");
+      // line break for better look on page - using because no style on page yet
+      var lineBreak = document.createElement("br");
+      // get character picture
+      var picture = character.data.results[i].thumbnail.path + ".jpg";
+      // create anchor for picture
+      var pictureContainer = document.createElement("img");
+      pictureContainer.src = picture;
+      // create marvel copyright container
+      var copyrightEl = document.createElement('p');
+      copyrightEl.textContent = "Data provided by Marvel. © 2014 Marvel";
+  
+      // Check if there is a description
+      if(character.data.results[i].description === "") {
+        infoEl.innerHTML = name + ": " + "No desctiption";
+      } else {
+        infoEl.innerHTML = name + ": " + description;
+      }
+  
+      // appened to container
+      characterContainerEl.appendChild(infoEl);
+      // append to DOM w/ line break
+      characterSelectEl.append(pictureContainer);
+      characterSelectEl.append(characterContainerEl);
+      characterSelectEl.append(copyrightEl);
+      characterSelectEl.append(lineBreak);
+    }
+  };
 
 // Change to id character-form - VG
 $(".main").on('submit', formSubmitHandler);
