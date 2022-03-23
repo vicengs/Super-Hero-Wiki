@@ -87,8 +87,8 @@ var getMovieApiData = function(movieCharacter){
                             responseCompany.json().then(function(dataCompany){
                                 // Loop to get just Marvel (420, 7505, 19551, 13252) or DC (128064, 174, 429, 9993) movies - VG
                                 for (var j = 0; j < dataCompany.production_companies.length; j++){
-                                    if ((dataCompany.production_companies[j].id === 420 || dataCompany.production_companies[j].id === 7505 || dataCompany.production_companies[j].id === 19551 ||
-                                         dataCompany.production_companies[j].id === 128064 || dataCompany.production_companies[j].id === 174 || dataCompany.production_companies[j].id === 429 || dataCompany.production_companies[j].id === 9993) &&
+                                    if ((dataCompany.production_companies[j].id === 420 || dataCompany.production_companies[j].id === 7505 || dataCompany.production_companies[j].id === 19551) &&
+                                         //dataCompany.production_companies[j].id === 128064 || dataCompany.production_companies[j].id === 174 || dataCompany.production_companies[j].id === 429 || dataCompany.production_companies[j].id === 9993) &&
                                          dataCompany.backdrop_path != null){
                                             // Array to storage the movie that meets conditions - VG
                                             arrCompanyMovies = {title: dataCompany.original_title
@@ -162,22 +162,29 @@ var getMovieApiData = function(movieCharacter){
             numId = numId + 1;
             // Show movies in page - VG
             moviesEl.append("<p><a href='#' id=" + maxIndex + " class='hero-" + numId + "'>" + arrMovies[maxIndex].title + " (" + maxYear + ")</a></p>");
-            // Declare variables DOM to manipulate HTML and style - VG
+            // Declare variables jQuery DOM to manipulate HTML and style - VG
             var openEl = $(".hero-"+numId);
             var closeEl = $(".close");
             var modalContainer = $(".modal-container");
             var overviewEl = $(".overview");
             var modalEl = $(".modal");
+            // Listener on click for each movie displayed - VG
             openEl.click(function(event){
                 event.preventDefault();
+                // Appears modal - VG
                 modalContainer.css("opacity","1");
                 modalContainer.css("visibility","visible");
                 modalEl.toggleClass("modal-close");
+                // Clear modal - VG
                 overviewEl.empty();
+                // Show dinamic image of the movie - VG
                 modalEl.css("backgroundImage","url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)");
+                // Show dinamic overview of the movie - VG
                 overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>");
             });
+            // Conditional to generate just one time - VG
             if (closeModal){
+                // Close Modal when button X is clicked - VG
                 closeEl.click(function(event){
                     event.preventDefault();
                     modalEl.toggleClass("modal-close");
@@ -185,6 +192,7 @@ var getMovieApiData = function(movieCharacter){
                         modalContainer.css("visibility","hidden");
                     },590);
                 });
+                // When clicked out of the modal it closes - VG
                 window.addEventListener("click", function(event){
                     var modalContainerTarget = document.querySelector(".modal-container");
                     if (event.target == modalContainerTarget){
@@ -195,6 +203,7 @@ var getMovieApiData = function(movieCharacter){
                         },590);
                     };
                 });
+                // Change value to close to avoid duplicity and malfunction of the modal - VG
                 closeModal = false;
             };
         };
