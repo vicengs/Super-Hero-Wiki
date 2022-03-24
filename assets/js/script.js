@@ -320,6 +320,7 @@ var searchHistory = function()  {
         var recentCont = document.querySelector('.history');
         recentBtn.innerHTML = localStorage.key(i);
         recentCont.appendChild(recentBtn);
+        recentBtn.className = "bg-black text-white font-bold px-2 rounded";
     }
 };
 searchHistory();
