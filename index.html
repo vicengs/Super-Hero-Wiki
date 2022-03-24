@@ -1,56 +1,87 @@
+<!-- ------------------------------- -->
+<!-- Project  : Super Hero Wiki      -->
+<!-- File     : index.html           -->
+<!-- Authors  : Ballard Ingram  (BI) -->
+<!--          : Stephen Fike    (SF) -->
+<!--          : Nathan Greiling (NG) -->
+<!--          : Matthew Berti   (MB) -->
+<!--          : Kevin Heaton    (KH) -->
+<!--          : Vicente Garcia  (VG) -->
+<!-- Created  : 03/17/2022           -->
+<!-- Modified : 03/23/2022           -->
+<!-- ------------------------------- -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!-- REQUIRED META TAGS-->
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE-Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--LINKING STYLE SHEETS AND TITLES-->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">-->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/preficon.ico">
+    <style> @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap'); </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>SuperWiki</title>
-</head>
-<body>
-    <!--logo and background-->
-    <header class="flex">
-        <!--Background and logo-->
-        <img src="./assets/images/banner1.jpg" class="w-100" name="background" alt=""/>
-        <h1 class="text-right align-text-top">Where Heros Assemble</h1>
+  </head>
+  <body>
+    <!-- PAGE CONTAINER AND INDIVIDUAL SECTIONS-->
+    <header class="header">
+        SuperWiki
+        <p>Where Heroes Assemble</p>
     </header>
 
-    <!--Sidebar-->
-    <aside class="">
-        <h2 class="">Popular Searches</h2>
-            <ul class="" >
-                <li class=""><a href="">Hero Name</a></li>
-            </ul>
-    </aside>
+    <div class="mainContainer">
+       
+        <nav class="nav popular-list">
+            Popular Marvel Movies
+        </nav>
 
-    <!--Searchbar section-->
-    <div class="">
-        <input id="characterNameInput" type="text" name="search" placeholder="Find a Hero or Villain">
-            <input type="submit" value="search">
+        <form class="main">
+            <input type="text" class="form-control" placeholder="Find your character...">
+            <button class="bg-black text-white font-bold px-2 rounded" type="button-addon2">SEARCH</button><br>
+            <div class ="">Recent Searches:<div class ="history"></div></div>
+            Character Results Section
+            <div class="characters"></div>
+        </form>
+
+        <!-- <section class="media">
+            lists the appearances of the hero
+                <h2 class="">Your Hero Movies</h2>
+                <div class="movies">
+                List of movies - VG
+                </div>
+            Popular Movie Section - MB
+            <div class="popular-movies">
+                <h2 class="section-heading">Popular Marvel Films</h2>
+                <div id="popular-list">
+                    Popular Movies List - MB
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- Modal - VG -->
+        <div class="modal-container">
+            <div class="modal modal-close">
+                <p class="close">X</p>
+                <div class="overview">
+                    <!-- Movies overview - VG -->
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!--Hero img and description-->
-    <div class="">
-        <img id="hero-picture" class="" src="" alt="" />
-        <p class="">
-            <!--character description-->
-        </p>
-    </div>
-
-    <!--lists the appearances of the hero-->
-    <div class="">
-        <h2 class="">Appearances of Your Hero</h2>
-        <ul class="">
-            <li class=""></li>
-        </ul>
-    </div>
-
-    <!--footer with links to Marvel and DC-->
-    <footer class="">
-        <p class="">
-            Check out the <a href="https://www.marvel.com/">Marvel</a> website for more info!
-        </p>
+    <footer class="footer">
+        <a href="https://www.dccomics.com/characters" target="_blank" rel="noreferrer noopener">SEE MORE ON THE DC CHARACTER PAGE<br><br><br></a>
+        <p>Created By: Team Alpha Super Awesome Cool Dynamite Wolf Squadron</p>
     </footer>
 
-</body>
+    <!-- Add link to jQuery - VG -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Add link to local JavaScript file - VG -->
+    <script src="./assets/js/script.js"></script>
+  </body>
 </html>
