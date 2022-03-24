@@ -47,7 +47,9 @@ body {
     margin: 5px;
     font-size: 2rem;
     height: auto;
+    text-align: center;
 }
+
 .main {
     grid-column: 2,3,4;
     grid-row: 2;
