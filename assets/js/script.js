@@ -8,13 +8,74 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/17/2022           */
-/* Modified : 03/23/2022           */
+/* Modified : 03/24/2022           */
 /* ------------------------------- */
 
 var characterNameInputEl = $(".form-control");//$("#characterNameInput"); // Class form-control instead id characterNameInput - VG
 //var characterFormEl = $("#character-form"); // updated to match new html format - SF - Not used yet - VG
 var characterSelectEl = $(".characters");
+// Declare DOM to display movies - VG
+var moviesEl = $(".movies");
+//var searchCaracterEl = $(".history");
+searchCaracterEl = $(".search");
+// Variable to activate listener to close modal - VG
+var closeModal = true;
+var closeModalError = true;
+// Declare characters array - VG
+var arrCharacters = [];
+// Function to clear search history - VG
+var clearSearchHistory = function(){
+    // Initialize array to null - VG
+    arrCharacters = [];
+    // Call function to save the null array in the local storage - VG
+    saveCharacter();
+    // Clear city buttons section - VG
+    searchCaracterEl.empty();
+};
+// Function to create a new character button - VG
+var createButton = function(createCharacter){
+    // Declare variable with character name (received in parameter) replacing spaces with middle slash - VG
+    var idCharacter = createCharacter.replace(/ /g,"-");
+    // Add to HTML by jQuery button with style classes and id to identify when clicked - VG
+    searchCaracterEl.append("<button id='" + idCharacter + "' class='bg-black text-white font-bold px-2 mx-2 mb-1 rounded'>"+ createCharacter +"</button>");
+    // Add listener to new (or load) button to response on click - VG
+    $("#"+idCharacter).click(function(){
+        // Call to function that search and display character of the button - VG
+        getMarvelApiData(this.textContent);
+    });
+    // Remove clear search button if it exists - VG
+    $("#delete").remove();
+    // Create at the end the clear search button - VG
+    searchCaracterEl.append("<button id='delete' class='bg-white text-black font-bold px-2 mx-2 mb-1 rounded'>Clear Search History</button>");
+    // Add listener to clear search button to response on click calling function to clear search history - VG
+    $("#delete").click(clearSearchHistory);
+};
 
+
+// Function to load (if exists) characters from local storage - VG
+var loadCharacters = function(){
+    // Call to local storage - VG
+    arrCharacters = JSON.parse(localStorage.getItem('characters'));
+    if (arrCharacters){
+        // Create button to each character found in local storage - VG
+        for (var i=0; i<arrCharacters.length; i++){
+            createButton(arrCharacters[i]);
+        };
+    }else{
+        // If there are nothing in local storage initializes global array variable
+        arrCharacters = [];
+    };
+};
+// Function to save a new search characters - VG
+var saveCharacter = function(newCharacter){
+    // If parameter has value (character) add new character searched to array - VG
+    if (newCharacter){
+        arrCharacters.push(newCharacter);
+        createButton(newCharacter);
+    };
+    // Add to local storage array (plus 1 city)
+    localStorage.setItem("characters", JSON.stringify(arrCharacters));
+};
 // Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function (event) {
   event.preventDefault();
@@ -24,12 +85,10 @@ var formSubmitHandler = function (event) {
     // var saveSearch = function(){
     //     localStorage.setItem(characterName, characterName);
     // };
-    
-  if (characterName) {
-    saveSearch(characterName);
-    //getMovieApiData(characterName); // Temporary
-    getMarvelApiData(characterName);
-    characterNameInputEl.val("");
+    if (characterName) {
+        //saveSearch(characterName);
+        getMarvelApiData(characterName);
+        characterNameInputEl.val("");
   } else {
     //alert("Please enter a valid character name"); // No alerts - VG
   }
@@ -48,24 +107,17 @@ var getMarvelApiData = function (character) {
     if (response.ok) {
       response.json().then(function (data) {
         // Display characters - SF
-        displayMarvelApi(data);
-        // Call to function to get movies - VG
-        // getMovieApiData(character);
+        displayMarvelApi(data, character);
       });
     } else {
       //alert("Character not found"); // No alerts - VG
     }
   });
 };
-
-// Variable to activate listener to close modal - VG
-var closeModal = true;
 // Function to get movie(s) data - VG
 var getMovieApiData = function(movieCharacter){
     // Declare Movie API url - VG
     var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query=" + movieCharacter ;
-    // Declare DOM to display movies - VG
-    var moviesEl = $(".movies");
     // Declare variable to assign unique id to each mnovie - VG
     var numId = 0;
     // Declare array for production companies - VG
@@ -76,8 +128,6 @@ var getMovieApiData = function(movieCharacter){
     fetch(movieApiUrl).then(function(responseMovie){
         // If retrieves movies data continues - VG
         if (responseMovie.ok){
-            // Clear movies section - VG
-            moviesEl.empty();
             // Interpret movies response to manage - VG
             responseMovie.json().then(function(dataMovie){
                 // Loop to get each movie found to that character - VG
@@ -102,6 +152,21 @@ var getMovieApiData = function(movieCharacter){
                                                                ,year: dataCompany.release_date.substring(0,4)};
                                             // Add new movie to main array from company movies - VG
                                             arrMovies.push(arrCompanyMovies);
+                                            // Validation to save just 1 time - VG
+                                            if (j===0){
+                                                // For each character in the array validates if the character to search exists or is a new search thus new search button in the history search - VG
+                                                var save = true;
+                                                for (var i=0; i<arrCharacters.length; i++){
+                                                    if (movieCharacter.toUpperCase().trim() === arrCharacters[i].toUpperCase().trim()){
+                                                        save = false
+                                                    };
+                                                };
+                                                // If character doesn't exist before (in the array) creates a new button search by the character - VG
+                                                if (save){
+                                                    // Call to save button but first create button through the create button function that remember returns the character to be used by save function - VG
+                                                    saveCharacter(movieCharacter.toUpperCase());
+                                                };
+                                            };
                                             // Break to avoid duplicity when has more than 1 valid production company - VG
                                             break;
                                     }; // Close if Company Production - VG
@@ -109,7 +174,7 @@ var getMovieApiData = function(movieCharacter){
                             }); // Close Response Companies json function - VG
                         }else{
                             // If doesn't retrieve data catch to show an error in screen - VG
-                            console.log("Company don't found for that character");
+                            //console.log("Company don't found for that character");
                         }; // Close if companies response ok - VG
                     }); // Close fetch API companies - VG
                 }; // Close For API movies - VG
@@ -117,7 +182,7 @@ var getMovieApiData = function(movieCharacter){
         }else{
             // If doesn't retrieve data catch to show an error in screen - VG
             // Open a modal - VG
-            console.log("Movies don't found for that character");
+            //console.log("Movies don't found for that character");
         }; // Close if movies response ok - VG
     }); // Close fetch API movies - VG
     // Timeout to be able to validate bacause the API's are asyncronous - VG
@@ -216,8 +281,12 @@ var getMovieApiData = function(movieCharacter){
 };
 
 // Function to display characters from Marvel Api - SF
-var displayMarvelApi = function (character) {
+var displayMarvelApi = function (character, movie) {
+    // Variable to display just one time the movies characters - VG
+    var newCharacter = true;
     characterSelectEl.empty();
+    // Clear movies section - VG
+    moviesEl.empty();
     // loop through characters array
     for (var i = 0; i < character.data.results.length; i++) {
       // create character container
@@ -233,6 +302,9 @@ var displayMarvelApi = function (character) {
       var lineBreak = document.createElement("br");
       // get character picture
       var picture = character.data.results[i].thumbnail.path + ".jpg";
+      if (picture === "http://i.annihil.us/u/prod/marvel/i/mg/c/d0/4ce5a883e8df0.jpg"){
+          picture = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg";
+      }
       // create anchor for picture
       var pictureContainer = document.createElement("img");
       pictureContainer.src = picture;
@@ -247,7 +319,6 @@ var displayMarvelApi = function (character) {
       } else {
         infoEl.innerHTML = name + ": " + description;
       }
-  
       // appened to container
       characterContainerEl.appendChild(infoEl);
       // append to DOM w/ line break
@@ -255,7 +326,49 @@ var displayMarvelApi = function (character) {
       characterSelectEl.append(characterContainerEl);
       characterSelectEl.append(copyrightEl);
       characterSelectEl.append(lineBreak);
+      // Call to function to get movies - VG
+      if (newCharacter){
+        getMovieApiData(movie);
+        newCharacter = false;
+      };
     }
+    if (newCharacter){
+        var modalEl = $(".modal");
+        var modalContainer = $(".modal-container");
+        var closeEl = $(".close");
+        var overviewEl = $(".overview");
+        // Clear modal - VG
+        overviewEl.empty();
+        modalContainer.css("opacity","1");
+        modalContainer.css("visibility","visible");
+        modalEl.toggleClass("modal-close");
+        modalEl.css("backgroundImage","url(http://trumpwallpapers.com/wp-content/uploads/Marvel-Wallpaper-05-1280-x-800.jpg)");
+        // Show dinamic overview of the movie - VG
+        overviewEl.append("<p>"+ movie +" Doesn't belong to Marvel characters</p>");
+        overviewEl.css("font-size","30px");
+        // Close Modal when button X is clicked - VG
+        if (closeModal){
+            closeEl.click(function(event){
+                event.preventDefault();
+                modalEl.toggleClass("modal-close");
+                setTimeout(function(){
+                    modalContainer.css("visibility","hidden");
+                },590);
+            });
+            // When clicked out of the modal it closes - VG
+            window.addEventListener("click", function(event){
+                var modalContainerTarget = document.querySelector(".modal-container");
+                if (event.target == modalContainerTarget){
+                    modalEl.toggleClass("modal-close");
+                    setTimeout(function(){
+                        modalContainer.css("opacity","0");
+                        modalContainer.css("visibility","hidden");
+                    },590);
+                };
+            });
+            closeModal = false;
+        };
+    };
   };
 
 // Change to id character-form - VG
@@ -289,6 +402,11 @@ var popularMovieData = function(list){
                 movieContainerEl.appendChild(moviePosterContainerEl);
                 movieContainerEl.appendChild(movieP);
                 popularEl.append(movieContainerEl);
+                popularEl.append("<br>");
+                // Validastion to show just top 5 - VG
+                if (i === 4){
+                    break;
+                }
             }
         });
         }else{
@@ -306,7 +424,7 @@ var saveSearch = function(characterName){
 };
 
 // loops through the local storage and displays in the HTML NG
-var searchHistory = function()  {
+/*var searchHistory = function()  {
     for (var i=0; i< localStorage.length; i++) {
         var recentBtn = document.createElement('button');
         var recentCont = document.querySelector('.history');
@@ -314,13 +432,14 @@ var searchHistory = function()  {
         recentCont.appendChild(recentBtn);
         recentBtn.className = "bg-black text-white font-bold px-2 mx-2 rounded";
     }
-};
+};*/
 
 // event listener for generated HTML NG
-$('.history').on('click','button',function(event){
+/*$('.history').on('click','button',function(event){
     var buttonClick = event.target.innerHTML
     getMarvelApiData(buttonClick);
-});
+});*/
 
 popularMovieData();
-searchHistory();
+//searchHistory();
+loadCharacters();
