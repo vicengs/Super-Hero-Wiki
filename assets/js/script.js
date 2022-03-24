@@ -10,6 +10,7 @@
 /* Created  : 03/17/2022           */
 /* Modified : 03/23/2022           */
 /* ------------------------------- */
+
 var characterNameInputEl = $(".form-control");//$("#characterNameInput"); // Class form-control instead id characterNameInput - VG
 //var characterFormEl = $("#character-form"); // updated to match new html format - SF - Not used yet - VG
 var characterSelectEl = $(".characters");
@@ -19,8 +20,13 @@ var formSubmitHandler = function (event) {
   event.preventDefault();
   // get value from input element
   var characterName = characterNameInputEl.val().trim();
-
+  
+    // var saveSearch = function(){
+    //     localStorage.setItem(characterName, characterName);
+    // };
+    
   if (characterName) {
+    saveSearch(characterName);
     //getMovieApiData(characterName); // Temporary
     getMarvelApiData(characterName);
     characterNameInputEl.val("");
@@ -41,19 +47,17 @@ var getMarvelApiData = function (character) {
     // successful response
     if (response.ok) {
       response.json().then(function (data) {
-        // displayMarvelApiData(data)
-        console.log(data);
         // Display characters - SF
         displayMarvelApi(data);
         // Call to function to get movies - VG
-        getMovieApiData(character);
+        // getMovieApiData(character);
       });
     } else {
       //alert("Character not found"); // No alerts - VG
     }
   });
-  console.log(character);
 };
+
 // Variable to activate listener to close modal - VG
 var closeModal = true;
 // Function to get movie(s) data - VG
@@ -210,24 +214,7 @@ var getMovieApiData = function(movieCharacter){
         };
     },1000);
 };
-// Function to display characters from Marvel Api - SF
-/*var displayMarvelApi = function (character) {
-  // loop through characters array
-  for (var i = 0; i < character.data.results.length; i++) {
-    // create character container
-    var characterContainerEl = document.createElement("div");
-    characterContainerEl.classList = "characterContainer";
-    // format name
-    var name = character.data.results[i].name;
-    // span element for character name
-    var nameEl = document.createElement("span");
-    nameEl.textContent = name;
-    // appened to container
-    characterContainerEl.appendChild(nameEl);
-    // append to DOM
-    characterSelectEl.append(characterContainerEl);
-  }
-};*/
+
 // Function to display characters from Marvel Api - SF
 var displayMarvelApi = function (character) {
     characterSelectEl.empty();
@@ -240,7 +227,7 @@ var displayMarvelApi = function (character) {
       var name = character.data.results[i].name;
       // format description
       var description = character.data.results[i].description;
-      // span element for character info
+      // card element for character info
       var infoEl = document.createElement("card");
       // line break for better look on page - using because no style on page yet
       var lineBreak = document.createElement("br");
@@ -252,6 +239,7 @@ var displayMarvelApi = function (character) {
       // create marvel copyright container
       var copyrightEl = document.createElement('p');
       copyrightEl.textContent = "Data provided by Marvel. © 2014 Marvel";
+       
   
       // Check if there is a description
       if(character.data.results[i].description === "") {
@@ -274,36 +262,65 @@ var displayMarvelApi = function (character) {
 $(".main").on('submit', formSubmitHandler);
 
 
-
-
 //Add Popular Superhero Movies to Homepage - MB
 var popularMovieData = function(list){
     var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
     //Declare DOM to display Popular Movies - MB
-    var popularEl = $("#popular-list");
+    var popularEl = $(".popular-list");
     //request to API - MB
     fetch(popularURL).then(function(response){
         if(response.ok){
         response.json().then(function(data){
             //display array - MB
             for(var i = 0; i < data.results.length; i++){
+                // create container div
+                var movieContainerEl = document.createElement('div');
                 //retrieve movie poster from URL - MB
                 var moviePosterUrl = "https://image.tmdb.org/t/p/w92" + data.results[i].poster_path;
-                //create DOM Element for Image and Movie Name - MB
-                    //appends movie poster - MB
-                popularEl.append("<p><img src='" + moviePosterUrl +  "'></p>");
-                    //retrieves and appends movie name and popularity order - MB
-                popularEl.append("<p><a href='#' data-toggle='modal' data-target='#popular-modal'>" + data.results[i].original_title +  "</a></p>");
+                // poster container
+                var moviePosterContainerEl = document.createElement('img');
+                moviePosterContainerEl.src = moviePosterUrl;
+                // retrieve movie name
+                var movieNameEl = data.results[i].original_title;
+                // format name
+                var movieP = document.createElement('p');
+                movieP.textContent = movieNameEl;
+                // append to DOM
+                movieContainerEl.appendChild(moviePosterContainerEl);
+                movieContainerEl.appendChild(movieP);
+                popularEl.append(movieContainerEl);
             }
         });
         }else{
             // TODO:  REPLACE ALERT WITH MODAL ERROR MESSAGE - MB
-            alert("API Can't Load Popular Films");
+            // alert("API Can't Load Popular Films");
+            var errorEl = document.createElement('p')
+            errorEl.textContent = "API Can't Load Popular Films";
+            popularEl.append(errorEl);
         }
 })};
-//popularMovieData();
 
+// saves the character name from user input into local storage NG
+var saveSearch = function(characterName){
+    localStorage.setItem(characterName, characterName);
+};
 
+// loops through the local storage and displays in the HTML NG
+var searchHistory = function()  {
+    for (var i=0; i< localStorage.length; i++) {
+        var recentBtn = document.createElement('button');
+        var recentCont = document.querySelector('.history');
+        recentBtn.innerHTML = localStorage.key(i);
+        recentCont.appendChild(recentBtn);
+        recentBtn.className = "bg-black text-white font-bold px-2 mx-2 rounded";
+    }
+};
 
+// event listener for generated HTML NG
+$('.history').on('click','button',function(event){
+    var buttonClick = event.target.innerHTML
+    getMarvelApiData(buttonClick);
+});
 
-
+popularMovieData();
+searchHistory();

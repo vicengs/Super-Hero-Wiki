@@ -23,49 +23,46 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
     <link rel="icon" type="image/x-icon" href="./assets/images/preficon.ico">
     <style> @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap'); </style>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>SuperWiki</title>
   </head>
   <body>
     <!-- PAGE CONTAINER AND INDIVIDUAL SECTIONS-->
-    <div class="container">
-        <header class="header">
-            SuperWiki
-            <p>Where Heroes Assemble</p>
-        </header>
-        <nav class="nav">
-            Popular Heroes
+    <header class="header">
+        SuperWiki
+        <p>Where Heroes Assemble</p>
+    </header>
+
+    <div class="mainContainer">
+       
+        <nav class="nav popular-list">
+            Popular Marvel Movies
         </nav>
+
         <form class="main">
-            <input type="text" class="form-control" placeholder="Find your hero...">
-            <button class="btn btn-dark search" type="button-addon2">SEARCH</button><br>
-            Hero Results Section
+            <input type="text" class="form-control" placeholder="Find your character...">
+            <button class="bg-black text-white font-bold px-2 rounded" type="button-addon2">SEARCH</button><br>
+            <div class ="">Recent Searches:<div class ="history"></div></div>
+            Character Results Section
             <div class="characters"></div>
         </form>
 
-        <!--<div class="characters"></div>
-        <!-Hero img and description->
-        <div class="">
-        <img id="hero-picture" class="" src="" alt="" />
-        <p class="">
-            <!-character description ->
-        </p>
-        </div>-->
-
-        <section class="media">
-            <!--lists the appearances of the hero-->
+        <!-- <section class="media">
+            lists the appearances of the hero
                 <h2 class="">Your Hero Movies</h2>
                 <div class="movies">
-                <!-- List of movies - VG -->
+                List of movies - VG
                 </div>
-            <!--Popular Movie Section - MB-->
+            Popular Movie Section - MB
             <div class="popular-movies">
                 <h2 class="section-heading">Popular Marvel Films</h2>
                 <div id="popular-list">
-                    <!--Popular Movies List - MB-->
+                    Popular Movies List - MB
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
+
         <!-- Modal - VG -->
         <div class="modal-container">
             <div class="modal modal-close">
@@ -76,8 +73,9 @@
             </div>
         </div>
     </div>
+
     <footer class="footer">
-        <a href="https://www.dccomics.com/characters">SEE MORE ON THE DC CHARACTER PAGE<br><br><br></a>
+        <a href="https://www.dccomics.com/characters" target="_blank" rel="noreferrer noopener">SEE MORE ON THE DC CHARACTER PAGE<br><br><br></a>
         <p>Created By: Team Alpha Super Awesome Cool Dynamite Wolf Squadron</p>
     </footer>
 
