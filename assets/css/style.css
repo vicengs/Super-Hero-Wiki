@@ -26,7 +26,7 @@ body {
 .header {
     grid-column: 1/4;
     grid-row: 1/2;
-    background-image: url(https://s1.gifyu.com/images/marvelbackground.gif);
+    background-image: url('../images/marvelbackground.gif');
     background-size: cover;
     background-position: center;
     border: 10px solid black;
