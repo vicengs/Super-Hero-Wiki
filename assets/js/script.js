@@ -19,8 +19,13 @@ var formSubmitHandler = function (event) {
   event.preventDefault();
   // get value from input element
   var characterName = characterNameInputEl.val().trim();
-
+  
+    // var saveSearch = function(){
+    //     localStorage.setItem(characterName, characterName);
+    // };
+    
   if (characterName) {
+    saveSearch(characterName);
     //getMovieApiData(characterName); // Temporary
     getMarvelApiData(characterName);
     characterNameInputEl.val("");
@@ -280,7 +285,7 @@ $(".main").on('submit', formSubmitHandler);
 var popularMovieData = function(list){
     var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
     //Declare DOM to display Popular Movies - MB
-    var popularEl = $("#popular-list");
+    var popularEl = $(".popular-list");
     //request to API - MB
     fetch(popularURL).then(function(response){
         if(response.ok){
@@ -301,9 +306,27 @@ var popularMovieData = function(list){
             alert("API Can't Load Popular Films");
         }
 })};
-//popularMovieData();
+popularMovieData();
 
+// saves the character name from user input into local storage NG
+var saveSearch = function(characterName){
+    localStorage.setItem(characterName, characterName);
+};
 
+// loops through the local storage and displays in the HTML NG
+var searchHistory = function()  {
+    for (var i=0; i< localStorage.length; i++) {
+        var recentBtn = document.createElement('button');
+        var recentCont = document.querySelector('.history');
+        recentBtn.innerHTML = localStorage.key(i);
+        recentCont.appendChild(recentBtn);
+    }
+};
+searchHistory();
 
-
+// event listener for generated HTML NG
+$('.history').on('click','button',function(event){
+    var buttonClick = event.target.innerHTML
+    getMarvelApiData(buttonClick);
+});
 
