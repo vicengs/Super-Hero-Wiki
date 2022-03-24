@@ -46,10 +46,13 @@ body {
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
+    height: auto;
+    text-align: center;
 }
+
 .main {
     grid-column: 2,3,4;
-    grid-row: 2 / 4;
+    grid-row: 2;
     grid-row-gap: 20px;
     background-image: url(https://as1.ftcdn.net/v2/jpg/01/43/21/48/1000_F_143214885_giQJ2nbKFxbKJ9IFxQqJN09McuEmq0CN.jpg);
     border: 10px solid black;
@@ -58,9 +61,12 @@ body {
     font-size: 2rem;
     background-position: -50px 0;
 }
+.main input{
+    padding: 0px 10px;
+}
 .media {
-    grid-column: 1/4;
-    grid-row: 4;
+    grid-column: 2;
+    grid-row: 3;
     background-image: url(https://cdn3.vectorstock.com/i/1000x1000/02/52/big-city-cartoon-book-style-background-vector-15760252.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -68,6 +74,7 @@ body {
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
+    /*height: 200px;*/
 }
 .movies a{
     color: white;
@@ -136,6 +143,7 @@ body {
     width: 30px;
     height: 25px;
     background: red;
+    color: white;
     box-shadow: 2px 2px 2px black;
     text-shadow: 1px 1px 1px black;
     font-weight: bolder;
@@ -154,4 +162,5 @@ body {
 }
 .overview{
     text-shadow: 2px 5px 3px black;
+    color: white;
 }
