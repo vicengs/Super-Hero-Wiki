@@ -14,7 +14,57 @@
 var characterNameInputEl = $(".form-control");//$("#characterNameInput"); // Class form-control instead id characterNameInput - VG
 //var characterFormEl = $("#character-form"); // updated to match new html format - SF - Not used yet - VG
 var characterSelectEl = $(".characters");
+//var searchCaracterEl = $(".history");
+searchCaracterEl = $(".popular-list");
+// Declare characters array - VG
+var arrCharacters = [];
 
+
+// Function to create a new character button - VG
+var createButton = function(createCharacter){
+    // Declare variable with character name (received in parameter) replacing spaces with middle slash - VG
+    var idCharacter = createCharacter.replace(/ /g,"-");
+    // Add to HTML by jQuery button with style classes and id to identify when clicked - VG
+    searchCaracterEl.append("<button id='" + idCharacter + "' class='bg-black text-white font-bold px-2 mx-2 mb-1 rounded'>"+ createCharacter +"</button>");
+    // Add listener to new (or load) button to response on click - VG
+    $("#"+idCharacter).click(function(){
+        // Call to function that search and display character of the button - VG
+        getMarvelApiData(this.textContent);
+    });
+    // Remove clear search button if it exists
+    /*$("#delete").remove();
+    // Create at the end the clear search button
+    cityButtons.append("<button id='delete' class='rounded-3 mb-2 btn deleteBtn text-white'>Clear Search History</button>");
+    // Add listener to clear search button to response on click calling function to clear search history
+    $("#delete").click(clearSearchHistory);*/
+    //
+};
+
+
+// Function to load (if exists) characters from local storage - VG
+var loadCharacters = function(){
+    // Call to local storage - VG
+    arrCharacters = JSON.parse(localStorage.getItem('characters'));
+    if (arrCharacters){
+        // Create button to each character found in local storage - VG
+        for (var i=0; i<arrCharacters.length; i++){
+            createButton(arrCharacters[i]);
+        };
+    }else{
+        // If there are nothing in local storage initializes global array variable
+        arrCharacters = [];
+    };
+};
+// Function to save a new search characters - VG
+var saveCharacter = function(newCharacter){
+    // If parameter has value (character) add new character searched to array - VG
+    if (newCharacter){
+        arrCharacters.push(newCharacter);
+    };
+    // Add to local storage array (plus 1 city)
+    localStorage.setItem("characters", JSON.stringify(arrCharacters));
+    createButton(newCharacter);
+};
 // Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function (event) {
   event.preventDefault();
@@ -24,12 +74,10 @@ var formSubmitHandler = function (event) {
     // var saveSearch = function(){
     //     localStorage.setItem(characterName, characterName);
     // };
-    
-  if (characterName) {
-    saveSearch(characterName);
-    //getMovieApiData(characterName); // Temporary
-    getMarvelApiData(characterName);
-    characterNameInputEl.val("");
+    if (characterName) {
+        //saveSearch(characterName);
+        getMarvelApiData(characterName);
+        characterNameInputEl.val("");
   } else {
     //alert("Please enter a valid character name"); // No alerts - VG
   }
@@ -50,7 +98,7 @@ var getMarvelApiData = function (character) {
         // Display characters - SF
         displayMarvelApi(data);
         // Call to function to get movies - VG
-        // getMovieApiData(character);
+        getMovieApiData(character);
       });
     } else {
       //alert("Character not found"); // No alerts - VG
@@ -102,6 +150,21 @@ var getMovieApiData = function(movieCharacter){
                                                                ,year: dataCompany.release_date.substring(0,4)};
                                             // Add new movie to main array from company movies - VG
                                             arrMovies.push(arrCompanyMovies);
+                                            // Validation to save just 1 time - VG
+                                            if (j===0){
+                                                // For each character in the array validates if the character to search exists or is a new search thus new search button in the history search - VG
+                                                var save = true;
+                                                for (var i=0; i<arrCharacters.length; i++){
+                                                    if (movieCharacter.toUpperCase().trim() === arrCharacters[i].toUpperCase().trim()){
+                                                        save = false
+                                                    };
+                                                };
+                                                // If character doesn't exist before (in the array) creates a new button search by the character - VG
+                                                if (save){
+                                                    // Call to save button but first create button through the create button function that remember returns the character to be used by save function - VG
+                                                    saveCharacter(movieCharacter.toUpperCase());
+                                                };
+                                            };
                                             // Break to avoid duplicity when has more than 1 valid production company - VG
                                             break;
                                     }; // Close if Company Production - VG
@@ -109,7 +172,7 @@ var getMovieApiData = function(movieCharacter){
                             }); // Close Response Companies json function - VG
                         }else{
                             // If doesn't retrieve data catch to show an error in screen - VG
-                            console.log("Company don't found for that character");
+                            //console.log("Company don't found for that character");
                         }; // Close if companies response ok - VG
                     }); // Close fetch API companies - VG
                 }; // Close For API movies - VG
@@ -117,7 +180,7 @@ var getMovieApiData = function(movieCharacter){
         }else{
             // If doesn't retrieve data catch to show an error in screen - VG
             // Open a modal - VG
-            console.log("Movies don't found for that character");
+            //console.log("Movies don't found for that character");
         }; // Close if movies response ok - VG
     }); // Close fetch API movies - VG
     // Timeout to be able to validate bacause the API's are asyncronous - VG
@@ -246,15 +309,23 @@ var displayMarvelApi = function (character) {
         infoEl.innerHTML = name + ": " + "No desctiption";
       } else {
         infoEl.innerHTML = name + ": " + description;
+        // appened to container
+        characterContainerEl.appendChild(infoEl);
+        // append to DOM w/ line break
+        characterSelectEl.append(pictureContainer);
+        characterSelectEl.append(characterContainerEl);
+        characterSelectEl.append(copyrightEl);
+        characterSelectEl.append(lineBreak);
+        break;
       }
   
       // appened to container
-      characterContainerEl.appendChild(infoEl);
+      /*characterContainerEl.appendChild(infoEl);
       // append to DOM w/ line break
       characterSelectEl.append(pictureContainer);
       characterSelectEl.append(characterContainerEl);
       characterSelectEl.append(copyrightEl);
-      characterSelectEl.append(lineBreak);
+      characterSelectEl.append(lineBreak);*/
     }
   };
 
@@ -306,7 +377,7 @@ var saveSearch = function(characterName){
 };
 
 // loops through the local storage and displays in the HTML NG
-var searchHistory = function()  {
+/*var searchHistory = function()  {
     for (var i=0; i< localStorage.length; i++) {
         var recentBtn = document.createElement('button');
         var recentCont = document.querySelector('.history');
@@ -314,13 +385,14 @@ var searchHistory = function()  {
         recentCont.appendChild(recentBtn);
         recentBtn.className = "bg-black text-white font-bold px-2 mx-2 rounded";
     }
-};
+};*/
 
 // event listener for generated HTML NG
-$('.history').on('click','button',function(event){
+/*$('.history').on('click','button',function(event){
     var buttonClick = event.target.innerHTML
     getMarvelApiData(buttonClick);
-});
+});*/
 
-popularMovieData();
-searchHistory();
+//popularMovieData();
+//searchHistory();
+loadCharacters();
