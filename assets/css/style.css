@@ -67,7 +67,7 @@ body {
 .media {
     grid-column: 2;
     grid-row: 3;
-    background-image: url(https://cdn3.vectorstock.com/i/1000x1000/02/52/big-city-cartoon-book-style-background-vector-15760252.jpg);
+    background-image: url('../images/big-city-cartoon-book-style-background-vector-15760252.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     border: 10px solid black;
