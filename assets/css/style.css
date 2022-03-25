@@ -164,3 +164,11 @@ body {
     text-shadow: 2px 5px 3px black;
     color: white;
 }
+.comicCard {
+    background: white;
+    color: black;
+    border: 5px solid black;
+    padding: 2px;
+    margin: 2px;
+    width: fit-content;
+}

@@ -319,6 +319,9 @@ var displayMarvelApi = function (character, movie) {
       } else {
         infoEl.innerHTML = name + ": " + description;
       }
+
+      characterSelectEl.addClass("comicCard");
+
       // appened to container
       characterContainerEl.appendChild(infoEl);
       // append to DOM w/ line break
