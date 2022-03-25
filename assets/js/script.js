@@ -401,6 +401,7 @@ var popularMovieData = function(list){
                 // format name
                 var movieP = document.createElement('p');
                 movieP.textContent = movieNameEl;
+                movieP.className = "comicCard";
                 // append to DOM
                 movieContainerEl.appendChild(moviePosterContainerEl);
                 movieContainerEl.appendChild(movieP);
