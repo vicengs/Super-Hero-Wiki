@@ -11,8 +11,7 @@
 /* Modified : 03/24/2022           */
 /* ------------------------------- */
 
-var characterNameInputEl = $(".form-control");//$("#characterNameInput"); // Class form-control instead id characterNameInput - VG
-//var characterFormEl = $("#character-form"); // updated to match new html format - SF - Not used yet - VG
+var characterNameInputEl = $(".form-control"); // Class form-control instead id characterNameInput - VG
 var characterSelectEl = $(".characters");
 // Declare DOM to display movies - VG
 var moviesEl = $(".movies");
@@ -50,8 +49,6 @@ var createButton = function(createCharacter){
     // Add listener to clear search button to response on click calling function to clear search history - VG
     $("#delete").click(clearSearchHistory);
 };
-
-
 // Function to load (if exists) characters from local storage - VG
 var loadCharacters = function(){
     // Call to local storage - VG
@@ -62,7 +59,7 @@ var loadCharacters = function(){
             createButton(arrCharacters[i]);
         };
     }else{
-        // If there are nothing in local storage initializes global array variable
+        // If there are nothing in local storage initializes global array variable - VG
         arrCharacters = [];
     };
 };
@@ -73,7 +70,7 @@ var saveCharacter = function(newCharacter){
         arrCharacters.push(newCharacter);
         createButton(newCharacter);
     };
-    // Add to local storage array (plus 1 city)
+    // Add to local storage array (plus 1 character) - VG
     localStorage.setItem("characters", JSON.stringify(arrCharacters));
 };
 // Function to take form input and pass onto Marvel Api
@@ -81,26 +78,15 @@ var formSubmitHandler = function (event) {
   event.preventDefault();
   // get value from input element
   var characterName = characterNameInputEl.val().trim();
-  
-    // var saveSearch = function(){
-    //     localStorage.setItem(characterName, characterName);
-    // };
     if (characterName) {
-        //saveSearch(characterName);
         getMarvelApiData(characterName);
         characterNameInputEl.val("");
-  } else {
-    //alert("Please enter a valid character name"); // No alerts - VG
-  }
+    }
 };
-
 var getMarvelApiData = function (character) {
   // format marvel api url
-  var apiUrl =
-    /*"https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=" +
-    character +
-    "&apikey=8aa203e41460eb91a6faf2e98ab88784";*/ // API don't work, use hash and timestap - VG
-    "https://gateway.marvel.com/v1/public/characters?apikey=bdcf8bf36f00d72167a3bfecfe99a353&hash=2c434abaf442b44445f5f4b5032e4de9&ts=9&nameStartsWith="+character;
+  // API uses hash and timestap - VG
+  var apiUrl = "https://gateway.marvel.com/v1/public/characters?apikey=bdcf8bf36f00d72167a3bfecfe99a353&hash=2c434abaf442b44445f5f4b5032e4de9&ts=9&nameStartsWith="+character;
   // make request to url
   fetch(apiUrl).then(function (response) {
     // successful response
@@ -251,6 +237,7 @@ var getMovieApiData = function(movieCharacter){
                 modalEl.css("backgroundImage","url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)");
                 // Show dinamic overview of the movie - VG
                 overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>");
+                overviewEl.css("font-size","20px");
             });
             // Conditional to generate just one time - VG
             if (closeModal){
@@ -311,17 +298,13 @@ var displayMarvelApi = function (character, movie) {
       // create marvel copyright container
       var copyrightEl = document.createElement('p');
       copyrightEl.textContent = "Data provided by Marvel. © 2014 Marvel";
-       
-  
       // Check if there is a description
       if(character.data.results[i].description === "") {
         infoEl.innerHTML = name + ": " + "No desctiption";
       } else {
         infoEl.innerHTML = name + ": " + description;
       }
-
       characterSelectEl.addClass("comicCard");
-
       // appened to container
       characterContainerEl.appendChild(infoEl);
       // append to DOM w/ line break
@@ -373,11 +356,8 @@ var displayMarvelApi = function (character, movie) {
         };
     };
   };
-
 // Change to id character-form - VG
 $(".main").on('submit', formSubmitHandler);
-
-
 //Add Popular Superhero Movies to Homepage - MB
 var popularMovieData = function(list){
     var popularURL = "https://api.themoviedb.org/3/discover/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_keywords=180547&with_watch_monetization_types=flatrate";
@@ -414,35 +394,14 @@ var popularMovieData = function(list){
         });
         }else{
             // TODO:  REPLACE ALERT WITH MODAL ERROR MESSAGE - MB
-            // alert("API Can't Load Popular Films");
             var errorEl = document.createElement('p')
             errorEl.textContent = "API Can't Load Popular Films";
             popularEl.append(errorEl);
         }
 })};
-
 // saves the character name from user input into local storage NG
-var saveSearch = function(characterName){
+/*var saveSearch = function(characterName){
     localStorage.setItem(characterName, characterName);
-};
-
-// loops through the local storage and displays in the HTML NG
-/*var searchHistory = function()  {
-    for (var i=0; i< localStorage.length; i++) {
-        var recentBtn = document.createElement('button');
-        var recentCont = document.querySelector('.history');
-        recentBtn.innerHTML = localStorage.key(i);
-        recentCont.appendChild(recentBtn);
-        recentBtn.className = "bg-black text-white font-bold px-2 mx-2 rounded";
-    }
 };*/
-
-// event listener for generated HTML NG
-/*$('.history').on('click','button',function(event){
-    var buttonClick = event.target.innerHTML
-    getMarvelApiData(buttonClick);
-});*/
-
 popularMovieData();
-//searchHistory();
 loadCharacters();

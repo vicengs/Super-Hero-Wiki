@@ -8,19 +8,16 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/18/2022           */
-/* Modified : 03/23/2022           */
+/* Modified : 03/25/2022           */
 /* ------------------------------- */
 body {
     font-family: 'Permanent Marker', cursive;
     color: black;
 }
 .mainContainer {
-    /* margin: 10px 0 10px 10px; */
     display: -ms-grid;
     display: grid;
     grid-template-columns: 25% 75%;
-    /* grid-column-gap: 10px; */
-    /* grid-row-gap: 10px; */
     width: 100%;
 }
 .header {
@@ -40,41 +37,65 @@ body {
 .nav {
     grid-column: 1;
     grid-row: 2 / 4;
-    background-image: url(https://wallpapertag.com/wallpaper/full/5/9/7/354610-large-comic-book-background-2048x2048-for-android-50.jpg);
-    background-size: auto;
+    background-image: url("../images/bg-blue.jpg");
+    background-size: cover;
     border: 10px solid black;
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
     height: auto;
     text-align: center;
+    color: white;
 }
-
 .main {
     grid-column: 2,3,4;
     grid-row: 2;
     grid-row-gap: 20px;
-    background-image: url(https://as1.ftcdn.net/v2/jpg/01/43/21/48/1000_F_143214885_giQJ2nbKFxbKJ9IFxQqJN09McuEmq0CN.jpg);
+    background-image: url("../images/bg-main.jpg");
     border: 10px solid black;
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
     background-position: -50px 0;
 }
+/* Style search section Begin - VG */
 .main input{
     padding: 0px 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.904);
+}
+.main button{
+    box-shadow: 8px 8px 8px rgba(42, 22, 22, 0.472);
+}
+button:hover{
+    box-shadow: 5px 5px 5px rgba(42, 22, 22, 0.472);
+    background-color: red
+}
+button:active{
+    box-shadow: 2px 2px 2px rgb(197, 163, 163);
+}
+#delete:hover{
+    background-color: red;
+}
+.popular-list img{
+    border: 5px solid white;
+    align-content: center;
+    display: inline-block;
+}
+/* Style buttons search End - VG */
+.characters img{
+    margin:auto;
+	display:block;
 }
 .media {
     grid-column: 2;
     grid-row: 3;
-    background-image: url('../images/big-city-cartoon-book-style-background-vector-15760252.jpg');
+    background-image: url("../images/bg-marvel-movies.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     border: 10px solid black;
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
-    /*height: 200px;*/
 }
 .movies a{
     color: white;
@@ -105,6 +126,7 @@ body {
     font-size: 12px;
     text-align: center;
 }
+/* Style Modal Begin - VG */
 .modal-container{
     opacity: 0;
     visibility: hidden;
@@ -164,6 +186,7 @@ body {
     text-shadow: 2px 5px 3px black;
     color: white;
 }
+/* Style Modal End - VG */
 .comicCard {
     background: white;
     color: black;
