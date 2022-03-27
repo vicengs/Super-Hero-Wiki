@@ -8,7 +8,7 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/17/2022           */
-/* Modified : 03/24/2022           */
+/* Modified : 03/26/2022           */
 /* ------------------------------- */
 
 var characterNameInputEl = $(".form-control"); // Class form-control instead id characterNameInput - VG
@@ -19,18 +19,8 @@ var moviesEl = $(".movies");
 searchCaracterEl = $(".search");
 // Variable to activate listener to close modal - VG
 var closeModal = true;
-var closeModalError = true;
 // Declare characters array - VG
 var arrCharacters = [];
-// Function to clear search history - VG
-var clearSearchHistory = function(){
-    // Initialize array to null - VG
-    arrCharacters = [];
-    // Call function to save the null array in the local storage - VG
-    saveCharacter();
-    // Clear city buttons section - VG
-    searchCaracterEl.empty();
-};
 // Function to create a new character button - VG
 var createButton = function(createCharacter){
     // Declare variable with character name (received in parameter) replacing spaces with middle slash - VG
@@ -49,6 +39,25 @@ var createButton = function(createCharacter){
     // Add listener to clear search button to response on click calling function to clear search history - VG
     $("#delete").click(clearSearchHistory);
 };
+// Function to save a new search characters - VG
+var saveCharacter = function(newCharacter){
+    // If parameter has value (character) add new character searched to array - VG
+    if (newCharacter){
+        arrCharacters.push(newCharacter);
+        createButton(newCharacter);
+    };
+    // Add to local storage array (plus 1 character) - VG
+    localStorage.setItem("characters", JSON.stringify(arrCharacters));
+};
+// Function to clear search history - VG
+var clearSearchHistory = function(){
+    // Initialize array to null - VG
+    arrCharacters = [];
+    // Call function to save the null array in the local storage - VG
+    saveCharacter();
+    // Clear city buttons section - VG
+    searchCaracterEl.empty();
+};
 // Function to load (if exists) characters from local storage - VG
 var loadCharacters = function(){
     // Call to local storage - VG
@@ -63,15 +72,23 @@ var loadCharacters = function(){
         arrCharacters = [];
     };
 };
-// Function to save a new search characters - VG
-var saveCharacter = function(newCharacter){
-    // If parameter has value (character) add new character searched to array - VG
-    if (newCharacter){
-        arrCharacters.push(newCharacter);
-        createButton(newCharacter);
-    };
-    // Add to local storage array (plus 1 character) - VG
-    localStorage.setItem("characters", JSON.stringify(arrCharacters));
+var getMarvelApiData = function (character) {
+    // format marvel api url
+    // API uses hash and timestap - VG
+    var apiUrl = "https://gateway.marvel.com/v1/public/characters?apikey=bdcf8bf36f00d72167a3bfecfe99a353&hash=2c434abaf442b44445f5f4b5032e4de9&ts=9&nameStartsWith="+character;
+    // make request to url
+    fetch(apiUrl).then(function (response) {
+      // successful response
+      if (response.ok) {
+        response.json().then(function (data) {
+          // Display characters - SF
+          displayMarvelApi(data, character);
+        });
+      } else {
+        // If doesn't retrieve data catch to show an error in modal - VG
+        createModal(0, "Data no found", "30px");
+      }
+    });
 };
 // Function to take form input and pass onto Marvel Api
 var formSubmitHandler = function (event) {
@@ -83,29 +100,128 @@ var formSubmitHandler = function (event) {
         characterNameInputEl.val("");
     }
 };
-var getMarvelApiData = function (character) {
-  // format marvel api url
-  // API uses hash and timestap - VG
-  var apiUrl = "https://gateway.marvel.com/v1/public/characters?apikey=bdcf8bf36f00d72167a3bfecfe99a353&hash=2c434abaf442b44445f5f4b5032e4de9&ts=9&nameStartsWith="+character;
-  // make request to url
-  fetch(apiUrl).then(function (response) {
-    // successful response
-    if (response.ok) {
-      response.json().then(function (data) {
-        // Display characters - SF
-        displayMarvelApi(data, character);
-      });
-    } else {
-      //alert("Character not found"); // No alerts - VG
-    }
-  });
+// Function to generate Modal - VG
+var createModal = function(movieId, movieName, pxSize){
+    // Declare variables jQuery DOM to manipulate HTML and style - VG
+    var closeEl = $(".close");
+    var modalContainer = $(".modal-container");
+    var overviewEl = $(".overview");
+    var modalEl = $(".modal");
+    // Function to open Modal - VG
+    var openModal = function(){
+        // Clear modal - VG
+        overviewEl.empty();
+        // Appears modal - VG
+        modalContainer.css("opacity","1");
+        modalContainer.css("visibility","visible");
+        modalEl.toggleClass("modal-close");
+    };
+    // If is an error search - VG
+    if (movieId === 0){
+        openModal();
+        // Show background image - VG
+        modalEl.css("backgroundImage","url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/items/997070/6704338131eac5f8ab62a23153e5d5c8712393b1.jpg)");
+        // Show error search message - VG
+        overviewEl.append("<p>" + movieName + "</p>");
+        overviewEl.css("font-size", pxSize);
+    // if is a Modal to show movies image and overview - VG
+    }else{
+        var openEl = $(".hero-"+movieId); // No search
+        openEl.click(function(event){
+            event.preventDefault();
+            openModal();
+            // Show dinamic image of the movie - VG
+            modalEl.css("backgroundImage","url(https://image.tmdb.org/t/p/original" + movieName[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)");
+            // Show dinamic overview of the movie - VG
+            overviewEl.append("<p>" + movieName[this.id].overview + "</p>");
+            overviewEl.css("font-size", pxSize);
+        });
+    };
+    // Conditional to generate just one time - VG
+    if (closeModal){
+        // Close Modal when button X is clicked - VG
+        closeEl.click(function(event){
+            event.preventDefault();
+            modalEl.toggleClass("modal-close");
+            setTimeout(function(){
+                modalContainer.css("visibility","hidden");
+            },590);
+        });
+        // When clicked out of the modal it closes - VG
+        window.addEventListener("click", function(event){
+            var modalContainerTarget = document.querySelector(".modal-container");
+            if (event.target == modalContainerTarget){
+                modalEl.toggleClass("modal-close");
+                setTimeout(function(){
+                    modalContainer.css("opacity","0");
+                    modalContainer.css("visibility","hidden");
+                },590);
+            };
+        });
+        // Change value to close to avoid duplicity and malfunction of the modal - VG
+        closeModal = false;
+    };
+};
+// Function to display movies - VG
+var displayMovies = function(heroMovies){
+    // Declare variable to assign unique id to each mnovie - VG
+    var numId = 0;
+    // Timeout to be able to validate bacause the API's are asyncronous - VG
+    setTimeout(function(){
+        // Variables to sort results by year production - VG
+        var maxYear = 0;
+        var maxIndex = 0;
+        var nextYear = 0;
+        var nextIndex = 0;
+        // Variable to allow get the max year just the first time - VG
+        var firstTime = true;
+        // Begin loop to iterate depending how many elements there are in the hero movies array - VG
+        for (var k = 0; k < heroMovies.length; k++){
+            // Initialize variables each main lap - VG
+            nextYear = 0;
+            nextIndex = 0;
+            // Reverse loop to validate each value ang get movies sorted by year - VG
+            for (var l = heroMovies.length - 1; l >= 0; l--){
+                // Get current movie year - VG
+                var currentYear = heroMovies[l].year;
+                // Enter just first time to get max year - VG
+                if (firstTime){
+                    // For each movie in the array check if is the max year - VG
+                    if (currentYear > nextYear){
+                        // If is the max year assign the row temporary like max value until finish loop - VG
+                        nextYear = currentYear;
+                        nextIndex = l;
+                    };
+                // Check the next max year - VG
+                }else if (currentYear < maxYear && currentYear > nextYear){
+                    nextYear = currentYear;
+                    nextIndex = l;
+                // Check if is a same year production - VG
+                }else if(currentYear === maxYear && l < maxIndex){
+                    nextYear = currentYear;
+                    nextIndex = l;
+                    // Break to avoid don't consider the movie if there are more than 2 different movies in the same year - VG
+                    break;
+                };
+            };
+            // Now assign the max vaslue to row after the loop finish each time - VG
+            maxYear = nextYear;
+            maxIndex = nextIndex;
+            // Change first time variable because don't need to enter to get maximum year - VG
+            firstTime = false;
+            // Add 1 to id per each movie found - VG
+            numId = numId + 1;
+            // Show movies in page - VG
+            moviesEl.append("<p><a href='#' id=" + maxIndex + " class='hero-" + numId + "'>" + heroMovies[maxIndex].title + " (" + maxYear + ")</a></p>");
+            // Call function to create Modal - VG
+            createModal(numId, heroMovies, "21px");
+        };
+    },1000);
 };
 // Function to get movie(s) data - VG
 var getMovieApiData = function(movieCharacter){
     // Declare Movie API url - VG
     var movieApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=8fa095f9c4ad16b980d9d656a90cdef0&language=en-US&page=1&include_adult=false&query=" + movieCharacter ;
-    // Declare variable to assign unique id to each mnovie - VG
-    var numId = 0;
     // Declare array for production companies - VG
     var arrCompanyMovies = [];
     // Declare array for movies - VG
@@ -159,112 +275,19 @@ var getMovieApiData = function(movieCharacter){
                                 }; // Close for API companies - VG
                             }); // Close Response Companies json function - VG
                         }else{
-                            // If doesn't retrieve data catch to show an error in screen - VG
-                            //console.log("Company don't found for that character");
+                            // If doesn't retrieve data catch to show an error in modal - VG
+                            createModal(0, "Data no found", "30px");
                         }; // Close if companies response ok - VG
                     }); // Close fetch API companies - VG
                 }; // Close For API movies - VG
             }); // Close Response Movies json function - VG
         }else{
-            // If doesn't retrieve data catch to show an error in screen - VG
-            // Open a modal - VG
-            //console.log("Movies don't found for that character");
+            // If doesn't retrieve data catch to show an error in modal - VG
+            createModal(0, "Data no found", "30px");
         }; // Close if movies response ok - VG
     }); // Close fetch API movies - VG
-    // Timeout to be able to validate bacause the API's are asyncronous - VG
-    setTimeout(function(){
-        // Variables to sort results by year production - VG
-        var maxYear = 0;
-        var maxIndex = 0;
-        var nextYear = 0;
-        var nextIndex = 0;
-        // Variable to allow get the max year just the first time - VG
-        var firstTime = true;
-        // Begin loop to iterate depending how many elements there are in the movies array - VG
-        for (var k = 0; k < arrMovies.length; k++){
-            // Initialize variables each main lap - VG
-            nextYear = 0;
-            nextIndex = 0;
-            // Reverse loop to validate each value ang get movies sorted by year - VG
-            for (var l = arrMovies.length - 1; l >= 0; l--){
-                // Get current movie year - VG
-                var currentYear = arrMovies[l].year;
-                // Enter just first time to get max year - VG
-                if (firstTime){
-                    // For each movie in the array check if is the max year - VG
-                    if (currentYear > nextYear){
-                        // If is the max year assign the row temporary like max value until finish loop - VG
-                        nextYear = currentYear;
-                        nextIndex = l;
-                    };
-                // Check the next max year - VG
-                }else if (currentYear < maxYear && currentYear > nextYear){
-                    nextYear = currentYear;
-                    nextIndex = l;
-                // Check if is a same year production - VG
-                }else if(currentYear === maxYear && l < maxIndex){
-                    nextYear = currentYear;
-                    nextIndex = l;
-                    // Break to avoid don't consider the movie if there are more than 2 different movies in the same year - VG
-                    break;
-                };
-            };
-            // Now assign the max vaslue to row after the loop finish each time - VG
-            maxYear = nextYear;
-            maxIndex = nextIndex;
-            // Change first time variable because don't need to enter to get maximum year - VG
-            firstTime = false;
-            // Add 1 to id per each movie found - VG
-            numId = numId + 1;
-            // Show movies in page - VG
-            moviesEl.append("<p><a href='#' id=" + maxIndex + " class='hero-" + numId + "'>" + arrMovies[maxIndex].title + " (" + maxYear + ")</a></p>");
-            // Declare variables jQuery DOM to manipulate HTML and style - VG
-            var openEl = $(".hero-"+numId);
-            var closeEl = $(".close");
-            var modalContainer = $(".modal-container");
-            var overviewEl = $(".overview");
-            var modalEl = $(".modal");
-            // Listener on click for each movie displayed - VG
-            openEl.click(function(event){
-                event.preventDefault();
-                // Appears modal - VG
-                modalContainer.css("opacity","1");
-                modalContainer.css("visibility","visible");
-                modalEl.toggleClass("modal-close");
-                // Clear modal - VG
-                overviewEl.empty();
-                // Show dinamic image of the movie - VG
-                modalEl.css("backgroundImage","url(https://image.tmdb.org/t/p/original" + arrMovies[this.id].image + "?api_key=8fa095f9c4ad16b980d9d656a90cdef0)");
-                // Show dinamic overview of the movie - VG
-                overviewEl.append("<p>" + arrMovies[this.id].overview + "</p>");
-                overviewEl.css("font-size","20px");
-            });
-            // Conditional to generate just one time - VG
-            if (closeModal){
-                // Close Modal when button X is clicked - VG
-                closeEl.click(function(event){
-                    event.preventDefault();
-                    modalEl.toggleClass("modal-close");
-                    setTimeout(function(){
-                        modalContainer.css("visibility","hidden");
-                    },590);
-                });
-                // When clicked out of the modal it closes - VG
-                window.addEventListener("click", function(event){
-                    var modalContainerTarget = document.querySelector(".modal-container");
-                    if (event.target == modalContainerTarget){
-                        modalEl.toggleClass("modal-close");
-                        setTimeout(function(){
-                            modalContainer.css("opacity","0");
-                            modalContainer.css("visibility","hidden");
-                        },590);
-                    };
-                });
-                // Change value to close to avoid duplicity and malfunction of the modal - VG
-                closeModal = false;
-            };
-        };
-    },1000);
+    // Call function to display movies - VG
+    displayMovies(arrMovies);
 };
 
 // Function to display characters from Marvel Api - SF
@@ -319,41 +342,7 @@ var displayMarvelApi = function (character, movie) {
       };
     }
     if (newCharacter){
-        var modalEl = $(".modal");
-        var modalContainer = $(".modal-container");
-        var closeEl = $(".close");
-        var overviewEl = $(".overview");
-        // Clear modal - VG
-        overviewEl.empty();
-        modalContainer.css("opacity","1");
-        modalContainer.css("visibility","visible");
-        modalEl.toggleClass("modal-close");
-        modalEl.css("backgroundImage","url(http://trumpwallpapers.com/wp-content/uploads/Marvel-Wallpaper-05-1280-x-800.jpg)");
-        // Show dinamic overview of the movie - VG
-        overviewEl.append("<p>"+ movie +" Doesn't belong to Marvel characters</p>");
-        overviewEl.css("font-size","30px");
-        // Close Modal when button X is clicked - VG
-        if (closeModal){
-            closeEl.click(function(event){
-                event.preventDefault();
-                modalEl.toggleClass("modal-close");
-                setTimeout(function(){
-                    modalContainer.css("visibility","hidden");
-                },590);
-            });
-            // When clicked out of the modal it closes - VG
-            window.addEventListener("click", function(event){
-                var modalContainerTarget = document.querySelector(".modal-container");
-                if (event.target == modalContainerTarget){
-                    modalEl.toggleClass("modal-close");
-                    setTimeout(function(){
-                        modalContainer.css("opacity","0");
-                        modalContainer.css("visibility","hidden");
-                    },590);
-                };
-            });
-            closeModal = false;
-        };
+        createModal(0, movie+" Doesn't belong to Marvel characters", "30px");
     };
   };
 // Change to id character-form - VG
@@ -387,7 +376,7 @@ var popularMovieData = function(list){
                 popularEl.append(movieContainerEl);
                 popularEl.append("<br>");
                 // Validastion to show just top 5 - VG
-                if (i === 4){
+                if (i === 9){
                     break;
                 }
             }
@@ -399,9 +388,5 @@ var popularMovieData = function(list){
             popularEl.append(errorEl);
         }
 })};
-// saves the character name from user input into local storage NG
-/*var saveSearch = function(characterName){
-    localStorage.setItem(characterName, characterName);
-};*/
 popularMovieData();
 loadCharacters();

@@ -8,11 +8,17 @@
 /*          : Kevin Heaton    (KH) */
 /*          : Vicente Garcia  (VG) */
 /* Created  : 03/18/2022           */
-/* Modified : 03/25/2022           */
+/* Modified : 03/26/2022           */
 /* ------------------------------- */
+:root{
+    --dark-color: rgb(0, 0, 0);
+    --clear-color: rgb(255, 255, 255);
+    --danger-color: rgb(255, 0, 0);
+    --black-shadow: rgba(42, 22, 22, 0.472);
+}
 body {
     font-family: 'Permanent Marker', cursive;
-    color: black;
+    color: var(--dark-color);
 }
 .mainContainer {
     display: -ms-grid;
@@ -26,7 +32,7 @@ body {
     background-image: url('../images/marvelbackground.gif');
     background-size: cover;
     background-position: center;
-    border: 10px solid black;
+    border: 10px solid var(--dark-color);
     margin: 5px;
     font-size: 5rem;
 }
@@ -39,20 +45,20 @@ body {
     grid-row: 2 / 4;
     background-image: url("../images/bg-blue.jpg");
     background-size: cover;
-    border: 10px solid black;
+    border: 10px solid var(--dark-color);
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
     height: auto;
     text-align: center;
-    color: white;
+    color: var(--clear-color);
 }
 .main {
     grid-column: 2,3,4;
     grid-row: 2;
     grid-row-gap: 20px;
     background-image: url("../images/bg-main.jpg");
-    border: 10px solid black;
+    border: 10px solid var(--dark-color);
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
@@ -64,20 +70,21 @@ body {
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.904);
 }
 .main button{
-    box-shadow: 8px 8px 8px rgba(42, 22, 22, 0.472);
+    box-shadow: 8px 8px 8px var(--black-shadow);
 }
 button:hover{
-    box-shadow: 5px 5px 5px rgba(42, 22, 22, 0.472);
-    background-color: red
+    box-shadow: 5px 5px 5px var(--black-shadow);
+    background-color: var(--danger-color);
 }
 button:active{
-    box-shadow: 2px 2px 2px rgb(197, 163, 163);
+    box-shadow: 2px 2px 3px var(--black-shadow);
+    background-color: var(--danger-color);
 }
 #delete:hover{
-    background-color: red;
+    background-color: var(--danger-color);
 }
 .popular-list img{
-    border: 5px solid white;
+    border: 5px solid var(--clear-color);
     align-content: center;
     display: inline-block;
 }
@@ -92,32 +99,35 @@ button:active{
     background-image: url("../images/bg-marvel-movies.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    border: 10px solid black;
+    border: 10px solid var(--dark-color);
     padding: 10px;
     margin: 5px;
     font-size: 2rem;
 }
 .movies a{
-    color: white;
+    color: var(--clear-color);
+}
+.movies a:hover{
+    color: rgb(255, 255, 0);
 }
 .footer {
     background-image: url(https://c4.wallpaperflare.com/wallpaper/8/212/856/dc-comics-joker-wallpaper-preview.jpg);
     background-size: auto;
     background-repeat: no-repeat;
     background-position: top right;
-    background-color: black;
-    border: 10px solid black;
+    background-color: var(--dark-color);
+    border: 10px solid var(--dark-color);
     padding: 10px;
     margin: 5px;
     text-align: center;
 }
 .footer a {
-    color: white;
+    color: var(--clear-color);
     font-size: 2rem;
     background-image: url(https://beet.gr/wp-content/uploads/2021/05/dc-comics-banner-2000x566.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    border: 5px solid white;
+    border: 5px solid var(--clear-color);
     text-decoration: none;
     display: inline-block;
     padding: 0px 20px;
@@ -164,10 +174,10 @@ button:active{
     display: inline-block;
     width: 30px;
     height: 25px;
-    background: red;
-    color: white;
-    box-shadow: 2px 2px 2px black;
-    text-shadow: 1px 1px 1px black;
+    background: var(--danger-color);
+    color: var(--clear-color);
+    box-shadow: 2px 2px 2px var(--dark-color);
+    text-shadow: 1px 1px 1px var(--dark-color);
     font-weight: bolder;
     line-height: 25px;
     cursor: pointer;
@@ -175,22 +185,22 @@ button:active{
 }
 .close:hover{
     top: 6px;
-    box-shadow: 1px 1px 1px black;
-    text-shadow: 0px 0px 0px black;
+    box-shadow: 1px 1px 1px var(--dark-color);
+    text-shadow: 0px 0px 0px var(--dark-color);
 }
 .close:active{
     top: 8px;
-    box-shadow: 0px 0px 0px black;
+    box-shadow: 0px 0px 0px var(--dark-color);
 }
 .overview{
-    text-shadow: 2px 5px 3px black;
-    color: white;
+    text-shadow: 2px 5px 3px var(--dark-color);
+    color: var(--clear-color);
 }
 /* Style Modal End - VG */
 .comicCard {
-    background: white;
-    color: black;
-    border: 5px solid black;
+    background: var(--clear-color);
+    color: var(--dark-color);
+    border: 5px solid var(--dark-color);
     padding: 2px;
     margin: 2px;
     width: fit-content;
