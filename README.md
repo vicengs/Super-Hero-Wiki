@@ -5,7 +5,13 @@ This is a group project for our Interactive Front End Web Site. We created a Sup
 This website was built with the standard structure of HTML, CSS, and JS files all referenced appropriately. We pulled from JQUERY, Tailwind, Google Fonts, Marvel API, and Movie API for the content. We used VS Code, the DOM, and Web Developer Tools to write and edit the code.
 
 ## Website
-You can find the final product at: https://ballardingram.github.io/Super-Hero-Wiki/
+You can find the final product at: https://vicengs.github.io/Super-Hero-Wiki/
+
+## GitHub repository
+You can find the repository at: https://github.com/vicengs/Super-Hero-Wiki
+
+## SSH to clone
+You can clone with: git@github.com:vicengs/Super-Hero-Wiki.git
 
 ## Contributions
 Team Alpha Super Awesome Cool Dynamite Wolf Squadron
@@ -43,14 +49,8 @@ We also found just as many successes to bring the project together.
 
 ## Product Images
 
-### Preview of the Site
-![Preview of the Site](https://github.com/ballardingram/Super-Hero-Wiki/blob/main/assets/images/readme0.gif)
+### Search and Popular Movies
+![Preview of the Site](https://github.com/vicengs/Super-Hero-Wiki/blob/main/assets/images/Screenshot_Super-Hero-Wiki-1.jpg)
 
-### Popular Movies
-![Popular Movies](https://github.com/ballardingram/Super-Hero-Wiki/blob/main/assets/images/readme1.jpg)
-
-### Character Search
-![Character Search](https://github.com/ballardingram/Super-Hero-Wiki/blob/main/assets/images/readme2.jpg)
-
-### DC Comics
-![DC Comics](https://github.com/ballardingram/Super-Hero-Wiki/blob/main/assets/images/readme3.jpg)
+### Popular Movies & DC
+![Popular Movies](https://github.com/vicengs/Super-Hero-Wiki/blob/main/assets/images/Screenshot_Super-Hero-Wiki-2.jpg)
